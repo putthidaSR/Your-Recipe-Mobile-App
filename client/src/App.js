@@ -1,11 +1,13 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import InitialRouter from './routers/InitialRouter';
+import * as eva from '@eva-design/eva';
+import { ApplicationProvider, Text } from '@ui-kitten/components';
 
 /**
  * The first component that the application will render when the app is loaded.
  */
-class App extends React.Component {
+export default class App extends React.Component {
 
   constructor(props) {
     super(props);
@@ -25,10 +27,10 @@ class App extends React.Component {
     }
 
     return (
-      <InitialRouter />
+      <ApplicationProvider {...eva} theme={eva.light}>
+        <InitialRouter />
+      </ApplicationProvider>
     );
-
   }
 }
 
-export default App;
