@@ -26,7 +26,7 @@ export default class InitialRouter extends React.Component {
           screenOptions={{
             headerShown: false
           }}
-          initialRouteName={this.props.isUserSignedIn ? 'Homepage' : 'Homepage'}
+          initialRouteName={this.props.isUserSignedIn ? 'Homepage' : 'Authentication'}
         >
           <Stack.Screen name="Authentication" component={AuthenticationRouter} />
           <Stack.Screen name="Homepage" component={HomepageRouter} />
