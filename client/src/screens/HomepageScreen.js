@@ -15,7 +15,6 @@ export default class HomepageScreen extends Component {
 
         {this.renderTitleView()}
         
-
         <View style={styles.buttonContainer}>
           {this.renderButtonOption('Post a New Recipe', require('./../assets/images/add.png'), 'PostNewRecipe')}
           <View style={{flex:0.1}}/>
