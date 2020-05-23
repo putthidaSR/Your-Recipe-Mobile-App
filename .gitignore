@@ -1,3 +1,5 @@
 # node.js
 server/node_modules/
 client/node_modules/
+.DS_Store
+client/ios/client.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
