@@ -1,14 +1,35 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {Component} from 'react';
-import {StyleSheet, Text, View, SafeAreaView, Dimensions} from 'react-native';
+import {StyleSheet, Text, Platform, View, SafeAreaView, Dimensions} from 'react-native';
 import {Colors, Card} from 'react-native-ui-lib';
+import AsyncStorage from '@react-native-community/async-storage';
 
 export default class HomepageScreen extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      username: ''
+    };
+  }
+
+  componentDidMount() {
+    this.getData();
+  }
+
+  getData = async () => {
+    try {
+      const value = await AsyncStorage.getItem('USER_KEY');
+      if (value !== null) {
+        this.setState({username: value});
+      }    
+    } catch (e) {
+      // error reading value
+    }
   }
 
   render() {
+
 
     return (
       <SafeAreaView style={styles.container}>
@@ -32,7 +53,7 @@ export default class HomepageScreen extends Component {
       <View style={{height: TITLE_HEIGHT_VIEW}}>
         <View style={{backgroundColor: '#05b6ff', position: 'absolute', top: 0, left: 0, 
           width: Dimensions.get('window').width, height: 250}} />
-        <Text style={{...styles.titleText, top: 90, left: 20, fontSize: Platform.OS === 'ios' ? 45 : 25, color: 'white'}}>Welcome, John!</Text>
+        <Text style={{...styles.titleText, top: 90, left: 20, fontSize: Platform.OS === 'ios' ? 45 : 25, color: 'white'}}>Welcome, {this.state.username}!</Text>
       </View>
     );
   }
@@ -40,26 +61,26 @@ export default class HomepageScreen extends Component {
   renderButtonOption = (title, imageSource, navigatorRouteName) => {
     return (
       <View style={{alignItems: 'center'}}>
-      <Card
-        row
-        height={120}
-        width={320}
-        style={{marginBottom: 15}}
-        onPress={() => {this.props.navigation.navigate(navigatorRouteName)}}
-        enableBlur
-        borderRadius={20}
-        useNative
-        backgroundColor={Colors.white}
-        activeOpacity={1}
-        activeScale={0.66}
-      >
-        <Card.Image width={100} style={{marginTop: 5, padding: 15, resizeMode: 'contain', height: 100}} imageSource={imageSource}/>
-        <View flex>
-          <Text style={styles.bottonOptionText}>
-            {title}
-          </Text>
-        </View>
-      </Card>
+        <Card
+          row
+          height={120}
+          width={320}
+          style={{marginBottom: 15}}
+          onPress={() => {this.props.navigation.navigate(navigatorRouteName)}}
+          enableBlur
+          borderRadius={20}
+          useNative
+          backgroundColor={Colors.white}
+          activeOpacity={1}
+          activeScale={0.66}
+        >
+          <Card.Image width={100} style={{marginTop: 5, padding: 15, resizeMode: 'contain', height: 100}} imageSource={imageSource}/>
+          <View flex>
+            <Text style={styles.bottonOptionText}>
+              {title}
+            </Text>
+          </View>
+        </Card>
       </View>
     );
   }

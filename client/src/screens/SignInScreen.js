@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import { StyleSheet, Text, View, Image, KeyboardAvoidingView, ScrollView, Dimensions } from 'react-native';
-
 import SignInForm from './../components/authentications/SignInForm';
 
 export default class SignInScreen extends Component {
@@ -11,15 +10,11 @@ export default class SignInScreen extends Component {
 
   render() {
     return (
-      <KeyboardAvoidingView 
-        behavior = "padding"
-        style={styles.fullSize}
-      >
+      <KeyboardAvoidingView behavior="padding" style={styles.fullSize}>
         <ScrollView
           contentContainerStyle={styles.scrollViewContainer}
           keyboardShouldPersistTaps="never"
-          scrollEnabled={false}
-        >
+          scrollEnabled={false}>
           {/** Logo container */}
           <View style={styles.logoContainer}>
             <Image
@@ -31,7 +26,9 @@ export default class SignInScreen extends Component {
 
           {/** Form container */}
           <View style={styles.formContainer}>
-            <SignInForm navigation = {this.props.navigation} />
+            <SignInForm 
+              navigation={this.props.navigation}
+            />
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
@@ -42,35 +39,35 @@ export default class SignInScreen extends Component {
 const styles = StyleSheet.create({
   fullSize: {
     width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height
+    height: Dimensions.get('window').height,
   },
   scrollViewContainer: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: '#3498db'
+    backgroundColor: '#3498db',
   },
   logoContainer: {
     alignItems: 'center',
     flexGrow: 1,
     justifyContent: 'center',
-    marginTop: 100
+    marginTop: 100,
   },
   logo: {
     width: 100,
-    height: 100
+    height: 100,
   },
   titleText: {
     color: '#FFF',
     marginTop: 15,
     width: 200,
     textAlign: 'center',
-    opacity: 0.7
+    opacity: 0.7,
   },
   formContainer: {
     alignItems: 'center',
     justifyContent: 'center',
     flex: 1,
-    marginBottom: 50
-  }
+    marginBottom: 50,
+  },
 });
