@@ -300,6 +300,8 @@ PODS:
     - ReactCommon/callinvoker (= 0.62.2)
   - ReactNativeUiLib (2.0.2):
     - React
+  - RNCAsyncStorage (1.11.0):
+    - React
   - RNCMaskedView (0.1.10):
     - React
   - RNDateTimePicker (2.4.0):
@@ -369,6 +371,7 @@ DEPENDENCIES:
   - ReactCommon/callinvoker (from `../node_modules/react-native/ReactCommon`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - ReactNativeUiLib (from `../node_modules/react-native-ui-lib/lib`)
+  - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
@@ -450,6 +453,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   ReactNativeUiLib:
     :path: "../node_modules/react-native-ui-lib/lib"
+  RNCAsyncStorage:
+    :path: "../node_modules/@react-native-community/async-storage"
   RNCMaskedView:
     :path: "../node_modules/@react-native-community/masked-view"
   RNDateTimePicker:
@@ -507,6 +512,7 @@ SPEC CHECKSUMS:
   React-RCTVibration: 4356114dbcba4ce66991096e51a66e61eda51256
   ReactCommon: ed4e11d27609d571e7eee8b65548efc191116eb3
   ReactNativeUiLib: 9883f80a22b855d4a866ceee433d1e24b1014a2a
+  RNCAsyncStorage: db711e29e5e0500d9bd21aa0c2e397efa45302b1
   RNCMaskedView: f5c7d14d6847b7b44853f7acb6284c1da30a3459
   RNDateTimePicker: 39a3987baca0848368f71f02c45bf6e1e61041c0
   RNGestureHandler: 8f09cd560f8d533eb36da5a6c5a843af9f056b38
