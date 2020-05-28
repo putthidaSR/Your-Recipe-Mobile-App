@@ -18,7 +18,7 @@ var connection  = require('./dbConfig')
 
 // Import routers that we created
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var usersRouter = require('./routes/UserRoutes');
 
 var app = express();
 
@@ -33,7 +33,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// parse requests of content-type: application/json
 app.use(bodyParser.json());
+
+// parse requests of content-type: application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(flash());
 app.use(expressValidator());
