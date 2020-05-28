@@ -6,6 +6,7 @@ import { Icon } from 'react-native-elements';
 
 import SignInScreen from './../screens/SignInScreen';
 import SignUpScreen from './../screens/SignUpScreen';
+import HomepageRouter from './HomepageRouter';
 
 /**
  * This function component represents router for user authentication screen. 
@@ -16,8 +17,9 @@ export default function AuthenticationRouter() {
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }} >
-        <Stack.Screen name="SignInScreen" component={SignInScreen} />
-        <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
+      <Stack.Screen name="SignInScreen" component={SignInScreen} />
+      <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
+      <Stack.Screen name="Homepage" component={HomepageRouter} />
     </Stack.Navigator>
   );
 }

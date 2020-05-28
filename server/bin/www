@@ -55,7 +55,8 @@ function normalizePort(val) {
 
 function onError(error) {
   if (error.syscall !== 'listen') {
-    throw error;
+    console.log('Server is not running...')
+    //throw error;
   }
 
   var bind = typeof port === 'string'
@@ -63,6 +64,7 @@ function onError(error) {
     : 'Port ' + port;
 
   // handle specific listen errors with friendly messages
+  console.log('Error code', error.code);
   switch (error.code) {
     case 'EACCES':
       console.error(bind + ' requires elevated privileges');
