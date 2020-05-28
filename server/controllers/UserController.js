@@ -12,6 +12,8 @@ exports.create = (req, res) => {
   }
 
   // Check if username already exists in the database
+  console.log('Check for duplicate username');
+
   mysql.query(`SELECT * FROM Users WHERE user_name = "${req.body.username}"`, function (error, results) {
     
     if (error) {
@@ -29,23 +31,26 @@ exports.create = (req, res) => {
         "status": 404,
         "response": "User with the username already exists in the table.",
       }));
-    }
-  });
-
-  // Attempt to insert user into the User table
-  mysql.query(`INSERT INTO Users (user_name, password, email) VALUES ('${req.body.username}', '${req.body.password}', '${req.body.email}')`, function (error, results) {
-    
-    if (error) {
-      console.log("Error inserting", error);
-      res.send(JSON.stringify({"status": 500, "error": error}));
-
     } else {
-      res.send(JSON.stringify({
-        "status": 200,
-        "message": "User is successfully added."
-      }));
-    }
 
+      console.log('Attempt to insert user');
+
+      // Attempt to insert user into the User table
+      mysql.query(`INSERT INTO Users (user_name, password, email) VALUES ('${req.body.username}', '${req.body.password}', '${req.body.email}')`, function (error, results) {
+        
+        if (error) {
+          console.log("Error inserting", error);
+          res.send(JSON.stringify({"status": 500, "error": error}));
+
+        } else {
+          res.send(JSON.stringify({
+            "status": 200,
+            "message": "User is successfully added."
+          }));
+        }
+
+      });
+    }
   });
 };
 
@@ -54,7 +59,7 @@ exports.create = (req, res) => {
  */
 exports.findOne = (req, res) => {
 
-  mysql.query(`SELECT * FROM Users WHERE user_name = "${req.params.username}" AND password LIKE BINARY "${req.params.password}%"`, function (error, results) {
+  mysql.query(`SELECT * FROM Users WHERE user_name = "${req.params.username}" AND password LIKE BINARY "${req.params.password}"`, function (error, results) {
     
     if (error) {
 

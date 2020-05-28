@@ -12,10 +12,6 @@ var flash = require('express-flash');
 var session = require('express-session');
 var bodyParser = require('body-parser');
 
-// Database related dependencies
-var mysql = require('mysql');
-var connection  = require('./dbConfig')
-
 // Import routers that we created
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/UserRoutes');
