@@ -12,7 +12,7 @@ var connection = mysql.createConnection({
 	host: "letsgogogo.mysql.database.azure.com", 
 	user: "bjj@letsgogogo", 
 	password: "!23Qweasd", 
-	database: "wwii_db", 
+	database: "TCSS_545_GROUP_9", 
 	port: 3306, 
 	ssl:true
 });

@@ -54,7 +54,7 @@ exports.create = (req, res) => {
  */
 exports.findOne = (req, res) => {
 
-  mysql.query(`SELECT * FROM Users WHERE user_name = "${req.params.username}" AND password = "${req.params.password}"`, function (error, results) {
+  mysql.query(`SELECT * FROM Users WHERE user_name = "${req.params.username}" AND password LIKE BINARY "${req.params.password}%"`, function (error, results) {
     
     if (error) {
 
