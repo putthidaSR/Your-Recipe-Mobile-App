@@ -1,7 +1,7 @@
 import React, { Component } from 'react'	;
 import { StyleSheet, Text, Alert, TextInput, TouchableOpacity, View, Dimensions } from 'react-native';
 import axios from 'axios';
-import {SERVER_IP_ADDRESS} from '../../serverConfig';
+import {SERVER_IP_ADDRESS, USER_KEY_STORAGE} from '../../serverConfig';
 import AsyncStorage from '@react-native-community/async-storage';
 
 export default class SignInForm extends Component {
@@ -51,7 +51,7 @@ export default class SignInForm extends Component {
 
       } else {
 
-        await AsyncStorage.setItem('USER_KEY', this.state.username);
+        await AsyncStorage.setItem(USER_KEY_STORAGE, this.state.username);
 
         // At this point, user is authenticated. Navigate to homescreen of the main application.
         this.props.navigation.navigate('Homepage', {username : this.state.username});

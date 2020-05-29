@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import {StyleSheet, Text, Platform, View, SafeAreaView, Dimensions} from 'react-native';
 import {Colors, Card} from 'react-native-ui-lib';
 import AsyncStorage from '@react-native-community/async-storage';
+import {USER_KEY_STORAGE} from '../serverConfig';
 
 export default class HomepageScreen extends Component {
 
@@ -14,17 +15,17 @@ export default class HomepageScreen extends Component {
   }
 
   componentDidMount() {
-    this.getData();
+    this.getUsername();
   }
 
-  getData = async () => {
+  getUsername = async () => {
     try {
-      const value = await AsyncStorage.getItem('USER_KEY');
+      const value = await AsyncStorage.getItem(USER_KEY_STORAGE);
       if (value !== null) {
         this.setState({username: value});
       }    
-    } catch (e) {
-      // error reading value
+    } catch (error) {
+      console.log('Error getting username', error);
     }
   }
 
