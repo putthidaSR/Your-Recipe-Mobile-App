@@ -12,4 +12,7 @@ router.get("/:username/:password", users.findOne);
 // Retrieve all users
 router.get("/", users.findAll);
 
+// Get user's cooking status level
+router.get("/stored/status/:username", users.findStatus);
+
 module.exports = router;
