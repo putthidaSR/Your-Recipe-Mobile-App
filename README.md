@@ -15,7 +15,7 @@ In the terminal:
 - Navigate to the server directory: `cd server`
 - Run: `npm install` (you only need to execute this for the first time or whenever new dependency is added)
 - Start the app: `npm start`
-- Go to your browser: `http://localhost:9000/`
+- Go to your browser: `http://localhost:8080/`
 
 > Note: Port number and server IP address can be updated in: `./server/bin/www`
 
