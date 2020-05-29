@@ -26,9 +26,7 @@ export default class SignInScreen extends Component {
 
           {/** Form container */}
           <View style={styles.formContainer}>
-            <SignInForm 
-              navigation={this.props.navigation}
-            />
+            <SignInForm navigation={this.props.navigation} />
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
