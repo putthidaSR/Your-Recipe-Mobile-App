@@ -18,8 +18,8 @@ var mysql = require('mysql');
 // });
 
 var mysql_pool = mysql.createPool({
-	host: "letsgogogo.mysql.database.azure.com", 
-	user: "bjj@letsgogogo", 
+	host: "545-mysql-real.mysql.database.azure.com", 
+	user: "bjj@545-mysql-real", 
 	password: "!23Qweasd", 
 	database: "TCSS_545_GROUP_9", 
 	port: 3306, 

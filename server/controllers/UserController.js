@@ -114,3 +114,32 @@ exports.findAll = (req, res) => {
     }
 	});
 }
+
+
+exports.findStatus = (request, response) => {
+
+  let sql = `CALL GetUserCookingLevel('${request.params.username}', @UserCookingLevel)`;
+
+  mysql.query(sql, function (error, results) {
+
+    if (error) {
+
+      // Handle any errors found while communicating with the DB
+      response.send(JSON.stringify({
+        "status": 500,
+        "error": error
+      })); 
+
+    } else {
+
+      console.log(results[0], results[0].userCookingLevel);
+      // Request is sucessful.
+      response.send(JSON.stringify({
+        "status": 200, 
+        "data": results[0]
+      }));
+      
+    }
+  });
+
+}

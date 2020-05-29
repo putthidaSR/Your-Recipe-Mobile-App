@@ -45,12 +45,21 @@ export default class ViewMyRecipes extends Component {
   getRecipeSummaryList = async() => {
 
     console.log('Attempt to send request to get recipe summary list');
+    const URL = SERVER_IP_ADDRESS + '/recipes/' + 'user_1';
+    console.log('Request URL', URL);
 
     try {
-      this.setState({
-        recipeSummaryList: VIEW_POSTED_RECIPES_DATA.data,
-        totalRecipesUploaded: VIEW_POSTED_RECIPES_DATA.data.length
-      });
+      const response = await axios.get(URL);
+      console.log(response.data);
+
+      if (response.data.status === 200) {
+        this.setState({
+          recipeSummaryList: response.data.response,
+          totalRecipesUploaded: response.data.response.length
+        });
+      } else {
+        console.log('Failed to get user status', response.data);
+      }
     } catch (error) {
       console.log('Error getting recipe summary list', error);
     }
@@ -84,10 +93,11 @@ export default class ViewMyRecipes extends Component {
     }
   }
 
-  handleViewFullRecipe = async() => {
+  handleViewFullRecipe = async(recipeId) => {
 
     console.log('Attempt to send request to view full recipe');
 
+    // http://localhost:8080/recipes/details/1
     try {
       this.setState({
         fullRecipeData: VIEW_ONE_RECIPE_WITH_DETAILS,
@@ -155,7 +165,7 @@ export default class ViewMyRecipes extends Component {
         {
           this.state.recipeSummaryList.map((data, index) => (
             <Card
-              title={data.recipeName}
+              title={data.name}
               key={index}
               containerStyle={{width: Dimensions.get('window').width - 40, borderRadius: 30}}
             >
