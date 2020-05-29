@@ -5,9 +5,9 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-community/async-storage';
 import {SERVER_IP_ADDRESS, USER_KEY_STORAGE} from '../serverConfig';
 import axios from 'axios';
-import { ListItem, Card, Button, Divider } from 'react-native-elements';
+import { Overlay, Card, Button, Divider } from 'react-native-elements';
 
-import {RECIPE_DATA, VIEW_POSTED_RECIPES_DATA} from './../utilities/SampleTestData';
+import {VIEW_ONE_RECIPE_WITH_DETAILS, VIEW_POSTED_RECIPES_DATA} from './../utilities/SampleTestData';
 
 export default class ViewMyRecipes extends Component {
 
@@ -15,11 +15,13 @@ export default class ViewMyRecipes extends Component {
     super(props);
 
     this.state = {
-      recipesList: RECIPE_DATA.data,
-      totalRecipesUploaded: VIEW_POSTED_RECIPES_DATA.data.length,
+      fullRecipeData: {},
+      totalRecipesUploaded: 0,
       recipeSummaryList: [],
       recipeId: 0,
-      username: ''
+      username: '',
+
+      showViewFullRecipeModal: false
     };
   }
 
@@ -45,7 +47,10 @@ export default class ViewMyRecipes extends Component {
     console.log('Attempt to send request to get recipe summary list');
 
     try {
-      this.setState({recipeSummaryList: VIEW_POSTED_RECIPES_DATA.data});
+      this.setState({
+        recipeSummaryList: VIEW_POSTED_RECIPES_DATA.data,
+        totalRecipesUploaded: VIEW_POSTED_RECIPES_DATA.data.length
+      });
     } catch (error) {
       console.log('Error getting recipe summary list', error);
     }
@@ -54,6 +59,9 @@ export default class ViewMyRecipes extends Component {
   handleEditRecipeName = async() => {
 
     console.log('Attempt to edit recipe name');
+    
+    const URL = SERVER_IP_ADDRESS + '/recipes/' + this.state.recipeId;
+    console.log('Request URL', URL);
 
     try {
 
@@ -66,6 +74,9 @@ export default class ViewMyRecipes extends Component {
 
     console.log('Attempt to delete a recipe');
 
+    const URL = SERVER_IP_ADDRESS + '/recipes/' + this.state.recipeId;
+    console.log('Request URL', URL);
+
     try {
 
     } catch (error) {
@@ -74,13 +85,58 @@ export default class ViewMyRecipes extends Component {
   }
 
   handleViewFullRecipe = async() => {
+
     console.log('Attempt to send request to view full recipe');
 
     try {
+      this.setState({
+        fullRecipeData: VIEW_ONE_RECIPE_WITH_DETAILS,
+        showViewFullRecipeModal: true
+      });
 
     } catch (error) {
       console.log(error);
     }
+  }
+
+  renderViewFullRecipe() {
+    return (
+      <Overlay 
+        isVisible={this.state.showViewFullRecipeModal}
+        overlayStyle={{
+          width: Dimensions.get('window').width - 50,
+          height: Dimensions.get('window').height > 800 
+            ? Dimensions.get('window').height - 350
+            : Dimensions.get('window').height - 200
+        }}
+        onBackdropPress={() => {
+          this.setState({showViewFullRecipeModal: true});
+        }}
+      >
+        <View style={{marginTop: 100}}>
+          <ScrollView contentContainerStyle={{height: LIST_VIEW_HEIGHT * 2}}>
+            <Text>{this.state.fullRecipeData.recipeName}</Text>
+            <Text>Recipe Origin: {this.state.fullRecipeData.origin}</Text>
+            <Text>Time Needed: {this.state.fullRecipeData.timeNeeded}</Text>
+            <Text>Difficulty Level: {this.state.fullRecipeData.difficultyLevel}</Text>
+
+            <Text>Food Types: {this.state.fullRecipeData.foodTypes}</Text>
+            <Text>Diet Types: {this.state.fullRecipeData.dietTypes}</Text>
+          </ScrollView>
+          
+        </View>
+        
+
+        <Button
+          containerStyle={{padding: 5, width: 300, alignSelf: 'center', position: 'absolute', bottom: 0, marginBottom: 10}}
+          titleStyle={{fontSize: 17, fontWeight: 'bold'}}
+          buttonStyle={{borderRadius: 20, marginRight: 0, marginBottom: 0}}
+          title="Close" 
+          onPress={() => this.setState({showViewFullRecipeModal: false})}                
+        />
+
+      </Overlay>
+    );
   }
 
   renderTitleView() {
@@ -112,6 +168,7 @@ export default class ViewMyRecipes extends Component {
                 title="   View Full Recipe"
                 onPress={this.handleViewFullRecipe}
               />
+              {this.renderViewFullRecipe()}
               
               <View style={{flexDirection: 'row', width: Dimensions.get('window').width - 100}}>
                 <Button

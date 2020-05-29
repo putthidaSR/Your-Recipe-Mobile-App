@@ -33,7 +33,19 @@ export const VIEW_POSTED_RECIPES_DATA = {
   ]
 };
 
-export const RECIPE_DATA = {
+export const VIEW_ONE_RECIPE_WITH_DETAILS = {
+  'recipeName':'Cookie',
+  'origin':'USA',
+  'timeNeeded':'45 mins',
+  'difficultyLevel':'Medium',
+  'foodTypes':['Breakfast','Dessert'],
+  'dietTypes':['Paleo','Keto'],
+  'ingredientList':['Milk','Butter','Flour'],
+  'cookingSteps':['Step 1 blah blah','Step 2 blahhh','Step 3 whatever'],
+  'latestUpdate': '2020-05-29 07:56:09'
+};
+
+export const FULL_RECIPE_DATA = {
   'status': 200,
   'data': [
     {
