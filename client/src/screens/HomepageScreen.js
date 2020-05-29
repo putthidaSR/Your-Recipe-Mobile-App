@@ -3,28 +3,52 @@ import React, {Component} from 'react';
 import {StyleSheet, Text, Platform, View, SafeAreaView, Dimensions} from 'react-native';
 import {Colors, Card} from 'react-native-ui-lib';
 import AsyncStorage from '@react-native-community/async-storage';
+import {SERVER_IP_ADDRESS, USER_KEY_STORAGE} from '../serverConfig';
+import axios from 'axios';
 
 export default class HomepageScreen extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      username: ''
+      username: '',
+      cookingLevelStatus: ':('
     };
   }
 
   componentDidMount() {
-    this.getData();
+    this.getUsername();
   }
 
-  getData = async () => {
+  getUsername = async () => {
     try {
-      const value = await AsyncStorage.getItem('USER_KEY');
+      const value = await AsyncStorage.getItem(USER_KEY_STORAGE);
       if (value !== null) {
         this.setState({username: value});
       }    
-    } catch (e) {
-      // error reading value
+    } catch (error) {
+      console.log('Error getting username', error);
+    }
+  }
+
+  getCookLevelStatus = async() => {
+    
+    const URL = SERVER_IP_ADDRESS + '/users/' + this.state.username + '/status';
+    console.log('Request URL', URL);
+
+    try {
+
+      const response = await axios.get(URL);
+      console.log(response.data);
+
+      if (response.data.status === 200) {
+        this.setState({cookingLevelStatus: response.data.cookingStatus});
+      } else {
+        console.log('Failed to get user status', response.data);
+      }
+
+    } catch (error) {
+      console.log('Error retrieving user cooking status', error);
     }
   }
 
@@ -66,7 +90,7 @@ export default class HomepageScreen extends Component {
           height={120}
           width={320}
           style={{marginBottom: 15}}
-          onPress={() => {this.props.navigation.navigate(navigatorRouteName)}}
+          onPress={() => {this.props.navigation.navigate(navigatorRouteName);}}
           enableBlur
           borderRadius={20}
           useNative
