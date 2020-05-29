@@ -7,18 +7,18 @@ const recipes = require("../controllers/RecipeController.js");
 router.post("/add");
 
 // Delete a specific recipe that belongs to the specific user (ie: user who is currently logged in to the app)
-router.delete("/:username/:recipeId");
+router.delete("/:recipeId", recipes.deleteOne);
 
 // Update a specific recipe that belongs to the specific user (ie: user who is currently logged in to the app)
 router.put("/:username/:recipeId");
 
 // Retrieve any recipes that belong to a specific user
-router.get("/:username");
+router.get("/:username", recipes.findOne);
 
-// Retrieve all recipes from any users
-router.get("/");
+// Retrieve all details of one specific recipe
+router.get("/details/:recipeId", recipes.findOneDetailRecipe);
 
 // Retrieve all recipes based on search type
-router.get("/search");
+router.post("/search", recipes.search);
 
 module.exports = router;

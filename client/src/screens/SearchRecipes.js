@@ -40,8 +40,40 @@ export default class SearchRecipes extends Component {
   handleSearchRecipe = async() => {
     console.log('Attempt to search for recipes');
 
-    try {
+    // http://localhost:8080/recipes/search
+    // {
+    //   "foodType": "Lunch",
+    //   "dietType": "Organic",
+    //   "difficultyLevel": "Easy"
+    // }
 
+    try {
+      //{
+      //     "status": 200,
+      //     "response": [
+      //         {
+      //             "Count(detail.id)": 9,
+      //             "Count(rep.id)": 9,
+      //             "recipeName": "recipe_name_1",
+      //             "recipeId": 1,
+      //             "recipeDetailId": 1
+      //         },
+      //         {
+      //             "Count(detail.id)": 9,
+      //             "Count(rep.id)": 9,
+      //             "recipeName": "recipe_name_2",
+      //             "recipeId": 2,
+      //             "recipeDetailId": 2
+      //         },
+      //         {
+      //             "Count(detail.id)": 9,
+      //             "Count(rep.id)": 9,
+      //             "recipeName": "recipe_name_3",
+      //             "recipeId": 3,
+      //             "recipeDetailId": 3
+      //         }
+      //     ]
+      // }
 
     } catch (error) {
       console.log('Error searching for recipes', error);

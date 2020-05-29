@@ -15,6 +15,7 @@ var bodyParser = require('body-parser');
 // Import routers that we created
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/UserRoutes');
+var recipeRouter = require('./routes/RecipeRoutes');
 
 var app = express();
 
@@ -46,7 +47,7 @@ app.use(session({
 // Handle routers that we created
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-
+app.use('/recipes', recipeRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
