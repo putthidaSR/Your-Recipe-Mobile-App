@@ -108,7 +108,8 @@ export default class ViewMyRecipes extends Component {
 
       if (response.data.status === 200) {
         console.log('Successfully updated!');
-        //this.getRecipeSummaryList();
+        this.getRecipeSummaryList();
+
       } else {
         console.log('Error', response.data);
       }
@@ -136,7 +137,7 @@ export default class ViewMyRecipes extends Component {
 
       if (response.data.status === 200) {
         console.log('Successfully deleted!');
-        //this.getRecipeSummaryList();    
+        this.getRecipeSummaryList();    
       } else {
         console.log('Error deleting recipe', response.data);
       }
@@ -192,59 +193,40 @@ export default class ViewMyRecipes extends Component {
   renderEditRecipeName() {
     
     return (
+
       <View>
-        <Modal
-          onTouchOutside={() => {this.setState({ showViewEditRecipeModal: true });}}
-          width={0.9}
-          height={0.25}
-          visible={this.state.showViewEditRecipeModal}
-          onSwipeOut={() => this.setState({ showViewEditRecipeModal: false })}
-          modalAnimation={new ScaleAnimation({initialValue: 3, useNativeDriver: true})}
-          onHardwareBackPress={() => {
-            this.setState({ showViewEditRecipeModal: false });
-            return true;
+        <Overlay 
+          isVisible={this.state.showViewEditRecipeModal}
+          overlayStyle={{
+            width: Dimensions.get('window').width - 50,
+            height: 250,
+            borderRadius: 20
           }}
-          modalTitle={
-            <ModalTitle
-              title= "Give A New Name To Your Secret Recipe"
-              hasTitleBar={true}
-              textStyle={{textAlign: 'center', color: 'white', fontWeight: 'bold'}}
-              style={{backgroundColor: '#2980b9'}}
-            />
-          }
-          footer={
-            <ModalFooter style={{borderBottomColor: '#b5b5b5',borderBottomWidth: 1,position: 'absolute',bottom: 0}}>
-              <ModalButton text="Save" bordered
-                onPress={() => {
-                  this.handleEditRecipeName();
-                  this.setState({ showViewEditRecipeModal: false });
-                }}
-                key="button-1"
-                style={{paddingHorizontal: 10}}
-                textStyle={{fontSize: 15, color: '#2980b9', textAlign: 'center', fontWeight: 'bold'}}               
-              />
-              <ModalButton text="Cancel" bordered
-                onPress={() => {
-                  this.setState({ showViewEditRecipeModal: false });
-                }}
-                key="button-2"
-                style={{paddingHorizontal: 10}}
-                textStyle={{fontSize: 15, color: '#2980b9', textAlign: 'center', fontWeight: 'bold'}}               
-              />
-            </ModalFooter>
-          }
+          onBackdropPress={() => {
+            this.setState({showViewEditRecipeModal: true});
+          }}
         >
-          <ModalContent>
-            <View>
-              <TextField
-                style={{marginTop: 50}}
-                placeholder={'Enter the name'}
-                onChangeText = {(newRecipeName) => this.setState({newRecipeName})}
-              />
-            </View>
-            
-          </ModalContent>
-        </Modal>
+          <Text style={{color: '#05b6ff', fontSize: 16, padding: 15, textAlign: 'center', fontWeight: 'bold'}}>Give A New Name To Your Secret Recipe</Text>
+          <View style={{justifyContent: 'center', alignSelf: 'center'}}>
+            <TextField
+              style={{marginTop: 50}}
+              placeholder={'Enter the new recipe name'}
+              onChangeText = {(newRecipeName) => this.setState({newRecipeName})}
+            />          
+          </View>
+
+          <Button
+            containerStyle={{padding: 5, width: 300, alignSelf: 'center', position: 'absolute', bottom: 0, marginBottom: 10}}
+            titleStyle={{fontSize: 17, fontWeight: 'bold', color: 'white'}}
+            buttonStyle={{borderRadius: 20, marginRight: 0, marginBottom: 0}}
+            title="Save" 
+            onPress={() => {
+              this.setState({ showViewEditRecipeModal: false });
+              this.handleEditRecipeName();
+            }}                
+          />
+
+        </Overlay>
       </View>
     );
   }
@@ -256,54 +238,34 @@ export default class ViewMyRecipes extends Component {
 
     return (
       <View>
-        <Modal
-          onTouchOutside={() => {this.setState({ showDeleteRecipeModal: true });}}
-          width={0.9}
-          height={0.25}
-          visible={this.state.showDeleteRecipeModal}
-          onSwipeOut={() => this.setState({ showDeleteRecipeModal: false })}
-          modalAnimation={new ScaleAnimation({initialValue: 3, useNativeDriver: true})}
-          onHardwareBackPress={() => {
-            this.setState({ showDeleteRecipeModal: false });
-            return true;
+        <Overlay 
+          isVisible={this.state.showDeleteRecipeModal}
+          overlayStyle={{
+            width: Dimensions.get('window').width - 50,
+            height: 250,
+            borderRadius: 20
           }}
-          modalTitle={
-            <ModalTitle
-              title= "Are you sure you want to delete your masterpiece?"
-              hasTitleBar={true}
-              textStyle={{textAlign: 'center', color: 'white', fontWeight: 'bold', fontSize: 18}}
-              style={{backgroundColor: 'red'}}
-            />
-          }
-          footer={
-            <ModalFooter style={{borderBottomColor: '#b5b5b5',borderBottomWidth: 1,position: 'absolute',bottom: 0}}>
-              <ModalButton text="Delete" bordered
-                onPress={() => {
-                  console.log('Attempt to delete!');
-                  this.handleDeleteRecipe();
-                  this.setState({ showDeleteRecipeModal: false });
-                }}
-                key="button-1"
-                style={{paddingHorizontal: 10}}
-                textStyle={{fontSize: 15, color: '#2980b9', textAlign: 'center', fontWeight: 'bold'}}               
-              />
-              <ModalButton text="Cancel" bordered
-                onPress={() => {
-                  this.setState({ showDeleteRecipeModal: false });
-                }}
-                key="button-2"
-                style={{paddingHorizontal: 10}}
-                textStyle={{fontSize: 15, color: '#2980b9', textAlign: 'center', fontWeight: 'bold'}}               
-              />
-            </ModalFooter>
-          }
+          onBackdropPress={() => {
+            this.setState({showDeleteRecipeModal: true});
+          }}
         >
-          <ModalContent>
-            <View style={{justifyContent: 'center', alignSelf: 'center'}}>
-              <Image style={{width: 100, height: 100, resizeMode: 'contain'}} source={require('./../assets/images/warning.jpg')} />
-            </View>
-          </ModalContent>
-        </Modal>
+          <Text style={{fontSize: 16, padding: 15, textAlign: 'center', fontWeight: 'bold'}}>Are you sure you want to delete your masterpiece?</Text>
+          <View style={{justifyContent: 'center', alignSelf: 'center'}}>
+            <Image style={{width: 100, height: 100, resizeMode: 'contain'}} source={require('./../assets/images/sadface.png')} />
+          </View>
+
+          <Button
+            containerStyle={{padding: 5, width: 300, alignSelf: 'center', position: 'absolute', bottom: 0, marginBottom: 10}}
+            titleStyle={{fontSize: 17, fontWeight: 'bold', color: 'white'}}
+            buttonStyle={{backgroundColor: 'red', borderRadius: 20, marginRight: 0, marginBottom: 0}}
+            title="Delete" 
+            onPress={() => {
+              this.handleDeleteRecipe();
+              this.setState({ showDeleteRecipeModal: false });
+            }}                
+          />
+
+        </Overlay>
       </View>
     );
   }
@@ -445,7 +407,6 @@ export default class ViewMyRecipes extends Component {
                 title="   View Full Recipe"
                 onPress={() => this.handleViewFullRecipe(data.id)}
               />
-              {this.renderViewFullRecipe()}
               
               <View style={{flexDirection: 'row', width: Dimensions.get('window').width - 100}}>
                 <Button
@@ -453,13 +414,12 @@ export default class ViewMyRecipes extends Component {
                   containerStyle={{padding: 5, width: 172}}
                   titleStyle={{fontSize: 17, fontWeight: 'bold'}}
                   buttonStyle={{backgroundColor: 'green', borderRadius: 20, marginLeft: 0, marginRight: 0, marginBottom: 0}}
-                  title="  Edit" 
+                  title="  Edit Name" 
                   onPress={() => {
                     this.setState({showViewEditRecipeModal: true});
                     this.setState({targetedRecipeId: data.id});
                   }}
                 />
-                {this.renderEditRecipeName()}
 
                 <Button
                   icon={<Icon name="ios-trash" color="#fff" size={20} />}
@@ -472,7 +432,6 @@ export default class ViewMyRecipes extends Component {
                     this.setState({targetedRecipeId: data.id});
                   }}
                 />
-                {this.renderDeleteRecipe()}
               </View>
 
               <Text style={{textAlign: 'right', padding: 5, marginTop: 5}}>Date Posted: {moment(data.latestUpdate).subtract(7, 'hours').format('MMMM D, YYYY, HH:mm A')}</Text>
@@ -510,6 +469,10 @@ export default class ViewMyRecipes extends Component {
           </ScrollView>
         </View>
 
+        {this.renderViewFullRecipe()}
+        {this.renderDeleteRecipe()}
+
+        {this.renderEditRecipeName()}
       </SafeAreaView>
     );
   }
