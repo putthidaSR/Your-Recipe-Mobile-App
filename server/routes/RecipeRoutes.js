@@ -9,8 +9,8 @@ router.post("/add");
 // Delete a specific recipe that belongs to the specific user (ie: user who is currently logged in to the app)
 router.delete("/:recipeId", recipes.deleteOne);
 
-// Update a specific recipe that belongs to the specific user (ie: user who is currently logged in to the app)
-router.put("/:username/:recipeId");
+// Update a name of the specific recipe that belongs to the specific user (ie: user who is currently logged in to the app)
+router.put("/:newRecipeName/:recipeId", recipes.updateOne);
 
 // Retrieve any recipes that belong to a specific user
 router.get("/:username", recipes.findOne);
