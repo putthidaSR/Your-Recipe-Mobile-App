@@ -85,6 +85,8 @@ exports.findOneDetailRecipe = (req, res) => {
 
     } else {
 
+      console.log('Attempt to select recipeDetails');
+
       var recipeDetailId = results[0].id;
       var timeNeeded = results[0].time_needed;
       var difficultyLevel = results[0].difficulty_level;

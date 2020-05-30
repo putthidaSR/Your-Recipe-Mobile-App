@@ -134,11 +134,11 @@ export default class SearchRecipes extends Component {
         isVisible={this.state.showViewFullRecipeModal}
         overlayStyle={{
           width: Dimensions.get('window').width - 50,
-          height: Dimensions.get('window').height - 350
+          height: Dimensions.get('window').height - 300
         }}
         onBackdropPress={() => {this.setState({showViewFullRecipeModal: true});}}
       >
-        <View style={{}}>
+        <View style={{padding: 10, paddingBottom: 20, marginBottom: 10}}>
 
           <ScrollView contentContainerStyle={{height: Dimensions.get('window').height * 2}}>
 
@@ -369,7 +369,7 @@ const styles = StyleSheet.create({
     left: 0, 
     width: Dimensions.get('window').width, 
     height: (Dimensions.get('window').height / 2) - 40,
-    flex: 0.2
+    flex: 0.2,
   },
   resultsContainer: {
     flex: 0.8,
