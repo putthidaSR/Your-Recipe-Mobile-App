@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {Component} from 'react';
 import {StyleSheet, Text, View, SafeAreaView, Dimensions, ActivityIndicator, Image} from 'react-native';
-import { Card, Icon } from 'react-native-elements';
+import { Card } from 'react-native-elements';
 import AsyncStorage from '@react-native-community/async-storage';
 import {SERVER_IP_ADDRESS, USER_KEY_STORAGE} from '../serverConfig';
 import axios from 'axios';
@@ -16,7 +16,8 @@ export default class AccountScreen extends Component {
     this.state = {
       isLoading: true, // flag to indicate whether the screen is still loading
       username: '',
-      cookingLevelStatus: ':('
+      cookingLevelStatus: ':(',
+      numOfPostedRecipe: 0
     };
   }
 
@@ -69,6 +70,29 @@ export default class AccountScreen extends Component {
     }
   }
 
+  /*********************************************************************
+   * Return the total number of recipes that the current user is posted.
+  **********************************************************************/
+  getTotalNumRecipesPosted = async() => {
+
+    console.log('Attempt to send request to get recipe summary list');
+    const URL = SERVER_IP_ADDRESS + '/recipes/' + 'user_1';
+    console.log('Request URL', URL);
+
+    try {
+      const response = await axios.get(URL);
+      this.setState({isLoading: false});
+
+      if (response.data.status === 200) {
+        this.setState({numOfPostedRecipe: response.data.response.length});
+      } else {
+        console.log('Failed to get user status', response.data);
+      }
+    } catch (error) {
+      console.log('Error getting recipe summary list', error);
+    }
+  } 
+
   /***************************************************************
    * Handle the action when user attempts to log out
   ****************************************************************/
@@ -87,9 +111,11 @@ export default class AccountScreen extends Component {
   renderStatusTextView() {
     return (
       <View>
-        <Text style={{marginBottom: 10, fontSize: 17, fontWeight: 'bold'}}>Your Current Cooking Status:</Text>
-        <Text style={{fontSize: 17, color: '#05b6ff', fontWeight: 'bold', textAlign: 'center'}}>{this.state.cookingLevelStatus}{'\n\n'}</Text>
-        <Text>{this.state.cookingLevelStatus === 'BEGINNER' ? 'Post more recipes to update your status... :)' 
+        <Text style={styles.titleText}>Your Current Cooking Status</Text>
+        <Text style={styles.subtitleText}>{this.state.cookingLevelStatus}{'\n\n'}</Text>
+        <Text style={styles.titleText}>Total Number Of Recipes You Have Posted</Text>
+        <Text style={styles.subtitleText}>{this.state.numOfPostedRecipe} Recipe{this.state.numOfPostedRecipe.length > 1 ? 's' : ''}{'\n\n'}</Text>
+        <Text style={{fontWeight: 'bold', textAlign: 'center', color: 'gray'}}>{this.state.cookingLevelStatus === 'BEGINNER' ? 'Post more recipes to update your status... :)' 
           : 'Awesome! Keep posting more recipes...'}</Text>
       </View>
     );
@@ -103,7 +129,7 @@ export default class AccountScreen extends Component {
       <View>
         {this.state.cookingLevelStatus &&
           <Card
-            title={<Text style={{fontSize: 16, fontWeight: 'bold', textAlign: 'center', padding: 10}}>Hi, {this.state.username}</Text>}
+            title={<Text style={{fontSize: 17, fontWeight: 'bold', textAlign: 'center', padding: 10}}>Hi, {this.state.username}</Text>}
             image={this.state.cookingLevelStatus === 'BEGINNER' 
               ? require('./../assets/images/beginner.png')
               : this.state.cookingLevelStatus === 'AMATEUR' ? require('./../assets/images/amateur.png')
@@ -140,15 +166,13 @@ export default class AccountScreen extends Component {
 
           <Button type="solid" title="LOGOUT"
             titleStyle={{fontSize: 15, fontWeight: 'bold'}}
-            containerStyle={{width: (Dimensions.get('window').width) - 50, alignSelf: 'center', paddingBottom: 15, paddingTop: 15}}
+            containerStyle={{width: (Dimensions.get('window').width) - 60, alignSelf: 'center', paddingBottom: 15, paddingTop: 15}}
             buttonStyle={{
               borderWidth: 3,
               borderColor: 'white',
-              borderRadius:15, 
-              shadowOffset: {width: 5, height: 5},
-              shadowColor: 'rgba(0,0,0,1)',
-              shadowOpacity: 0.43,
-              height: 55
+              borderRadius:15,
+              height: 55,
+              backgroundColor: '#05b6ff'
             }}
             onPress={this.handleLogOut} 
           />
@@ -165,4 +189,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  titleText: {
+    marginBottom: 10, fontSize: 17, fontWeight: 'bold', textAlign: 'center'
+  },
+  subtitleText: {
+    fontSize: 17, color: '#05b6ff', fontWeight: 'bold', textAlign: 'center'
+  }
 });
