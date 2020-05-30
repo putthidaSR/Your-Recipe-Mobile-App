@@ -339,7 +339,7 @@ export default class SearchRecipes extends Component {
         </View>
 
         <View style={styles.resultsContainer}>
-          <ScrollView style={styles.scrollViewContainer} contentContainerStyle={{width: Dimensions.get('window').width, height: Dimensions.get('window').height}}>
+          <ScrollView style={styles.scrollViewContainer} contentContainerStyle={{width: Dimensions.get('window').width, height: Dimensions.get('window').height * 5}}>
             {this.renderRecipeList()}
           </ScrollView>
           

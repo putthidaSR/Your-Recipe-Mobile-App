@@ -17,7 +17,7 @@ export default class ViewMyRecipes extends Component {
 
     this.state = {
 
-      isLoading: true, // flag to indicate whether the screen is still loading
+      isLoading: false, // flag to indicate whether the screen is still loading
 
       totalRecipesUploaded: 0,
       recipeSummaryList: [],
@@ -69,6 +69,7 @@ export default class ViewMyRecipes extends Component {
     console.log('Attempt to send request to get recipe summary list');
     const URL = SERVER_IP_ADDRESS + '/recipes/' + this.state.username;
     console.log('Request URL', URL);
+    this.setState({isLoading: true});
 
     try {
       const response = await axios.get(URL);
@@ -93,6 +94,8 @@ export default class ViewMyRecipes extends Component {
    * Handle the action when edit recipe is clicked
   ****************************************************************/
   handleEditRecipeName = async() => {
+
+    this.setState({isLoading: true});
 
     console.log('Attempt to edit recipe name');
     
@@ -121,6 +124,7 @@ export default class ViewMyRecipes extends Component {
   handleDeleteRecipe = async() => {
 
     console.log('Attempt to delete a recipe');
+    this.setState({isLoading: true});
 
     const URL = SERVER_IP_ADDRESS + '/recipes/' + this.state.targetedRecipeId;
     console.log('Request URL', URL);
@@ -150,8 +154,7 @@ export default class ViewMyRecipes extends Component {
     console.log('Attempt to send request to view full recipe');
     const URL = SERVER_IP_ADDRESS + '/recipes/details/' + recipeId;
     console.log('Request URL to view detailed recipe', URL);
-
-    // http://localhost:8080/recipes/details/1
+    this.setState({isLoading: true});
 
     try {
 
@@ -232,11 +235,14 @@ export default class ViewMyRecipes extends Component {
           }
         >
           <ModalContent>
-            <TextField
-              style={{marginTop: 50}}
-              placeholder={'Enter the name'}
-              onChangeText = {(newRecipeName) => this.setState({newRecipeName})}
-            />
+            <View>
+              <TextField
+                style={{marginTop: 50}}
+                placeholder={'Enter the name'}
+                onChangeText = {(newRecipeName) => this.setState({newRecipeName})}
+              />
+            </View>
+            
           </ModalContent>
         </Modal>
       </View>
@@ -467,7 +473,7 @@ export default class ViewMyRecipes extends Component {
                 {this.renderDeleteRecipe()}
               </View>
 
-              <Text style={{textAlign: 'right', padding: 5, marginTop: 5}}>Date Posted: {moment(data.latestUpdate).format('MMMM D, YYYY, HH:mm A')}</Text>
+              <Text style={{textAlign: 'right', padding: 5, marginTop: 5}}>Date Posted: {moment(data.latestUpdate).subtract(7, 'hours').format('MMMM D, YYYY, HH:mm A')}</Text>
             </Card>
             
           ))
@@ -514,12 +520,11 @@ const LIST_VIEW_HEIGHT = 2 * WHOLE_HEIGHT_VIEW / 3;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff'
   },
   scrollViewContainer: {
     alignSelf: 'center',
-    marginTop: '5%',
-    marginBottom: '5%',
+    marginTop: '15%',
+    marginBottom: '15%',
   },
   topViewContainer: {
     alignSelf: 'center', 

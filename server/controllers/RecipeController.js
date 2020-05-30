@@ -3,7 +3,8 @@ const mysql = require('../dbConfig.js');
 
 exports.findOne = (req, res) => {
 
-  mysql.query(`SELECT * FROM view_posted_recipes WHERE user_name = '${req.params.username}'`, function (error, results) {
+  mysql.query(`SELECT * FROM view_posted_recipes WHERE user_name = '${req.params.username}'
+    ORDER BY id DESC`, function (error, results) {
 
 		if (error){
 
@@ -280,6 +281,20 @@ exports.create = (req, res) => {
                           });
                         })
         
+                        if (!hasError) {
+                          // Request is sucessful.
+                          res.send(JSON.stringify({
+                            "status": 200, 
+                            "response": 'New Recipe is successfully created.'
+                          }));
+                        } else {
+                          // Handle any errors found while communicating with the DB
+                          res.send(JSON.stringify({
+                            "status": 500,
+                            "error": error
+                          }));
+                        }
+
                       } else {
                         console.log('errorrrr', error);
                         hasError = true;
@@ -301,17 +316,4 @@ exports.create = (req, res) => {
     }
   });
   
-  if (!hasError) {
-    // Request is sucessful.
-    res.send(JSON.stringify({
-      "status": 200, 
-      "response": 'New Recipe is successfully created.'
-    }));
-  } else {
-    // Handle any errors found while communicating with the DB
-    res.send(JSON.stringify({
-      "status": 500,
-      "error": error
-    }));
-  }
 }
