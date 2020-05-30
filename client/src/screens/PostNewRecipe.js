@@ -1,14 +1,15 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {Component} from 'react';
-import {StyleSheet, Dimensions, Alert, Image, Text, View, TouchableOpacity, ScrollView, SafeAreaView} from 'react-native';
+import {StyleSheet, Dimensions, Image, Text, View, TouchableOpacity, ScrollView, SafeAreaView, ActivityIndicator} from 'react-native';
 
-import { ButtonGroup, Button, Divider } from 'react-native-elements';
+import { ButtonGroup, Button, Divider, Overlay } from 'react-native-elements';
 import Modal, { ModalContent, ModalTitle, ModalFooter, ModalButton } from 'react-native-modals';
 import {Colors, TextField, TagsInput} from 'react-native-ui-lib';
 import SelectMultiple from 'react-native-select-multiple';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-community/async-storage';
-import {USER_KEY_STORAGE} from '../serverConfig';
+import {USER_KEY_STORAGE, SERVER_IP_ADDRESS} from '../serverConfig';
+import axios from 'axios';
 
 const foodTypeOptions = ['Breakfast', 'Lunch', 'Dinner', 'Dessert'];
 const dietTypeOptions = ['Gluten-Free', 'Organic', 'Keto', 'Paleo', 'Vegan', 'AIP Diet', 'Diary-Free'];
@@ -35,7 +36,11 @@ export default class PostNewRecipe extends Component {
       stepList: [],
 
       foodTypeModal: false,
-      dietTypeModal: false
+      dietTypeModal: false,
+
+      showPostedRecipeOnSuccessDialog: false,
+      showPostedRecipeOnFailureDialog: false,
+      isLoading: false, // flag to indicate whether the screen is still loading
     };
 
     this.handlePostNewRecipe = this.handlePostNewRecipe.bind(this);
@@ -48,7 +53,9 @@ export default class PostNewRecipe extends Component {
     this.getUsername();
   }
 
-
+  /***************************************************
+   * Attempt to retrieve username from local storage if exists
+   ****************************************************/
   getUsername = async () => {
     try {
       const value = await AsyncStorage.getItem(USER_KEY_STORAGE);
@@ -60,9 +67,13 @@ export default class PostNewRecipe extends Component {
     }
   }
 
+  /***************************************************
+   * Handle the action when upload recipe button is clicked
+   ****************************************************/
   async handlePostNewRecipe() {
 
     console.log('Attempt to send request to server to post a new recipe');
+    this.setState({isLoading: true});
 
     const difficultyValue = this.state.difficultyLevel === 0 ? 'Easy'
       : this.state.difficultyLevel === 1 ? 'Medium' : 'Hard';
@@ -78,32 +89,106 @@ export default class PostNewRecipe extends Component {
     });
 
     const requestBody = {
-      'username': 'user01',
+      'username': this.state.username,
       'recipeName': this.state.recipeName,
       'origin': this.state.origin,
       'timeNeeded': this.state.timeNeeded,
       'difficultyLevel': difficultyValue,
-      'foodTypes': foodTypeValues,
-      'dietTypes': dietTypeValues,
+      'foodType': foodTypeValues,
+      'dietType': dietTypeValues,
       'ingredientList': this.state.ingredientList,
       'cookingSteps': this.state.stepList
     };
+    console.log('Request body to post a new recipe', JSON.stringify(requestBody));
 
-    console.log(JSON.stringify(requestBody));
+    const requestUrl = SERVER_IP_ADDRESS + '/recipes/';
+    console.log('Request URL', requestUrl);
 
-    Alert.alert(
-      'Request to send to server',
-      JSON.stringify(requestBody, null, '\n'),
-      [{ text: 'OK'}],
-      { cancelable: false },
+    await axios.post(requestUrl, requestBody)
+      .then((response) => {
+
+        this.setState({isLoading: false});
+
+        if (response.data.status === 200) {
+          this.setState({showPostedRecipeOnSuccessDialog: true});
+
+        } else {
+          console.log('Failed to post a new recipe', response.data);
+          this.setState({showPostedRecipeOnFailureDialog: true});
+        }
+      }, (error) => {
+        console.log('Error posting new recipes', error);
+      });
+  }
+
+  /***************************************************
+   * Dialog to display when a recipe is successfully posted to the DB.
+   ****************************************************/
+  renderPostRecipeOnSuccess() {
+    return (
+      <Overlay 
+        isVisible={this.state.showPostedRecipeOnSuccessDialog}
+        overlayStyle={{
+          width: Dimensions.get('window').width - 50,
+          height: 200,
+          borderRadius: 20
+        }}
+        onBackdropPress={() => {
+          this.setState({showPostedRecipeOnSuccessDialog: true});
+        }}
+      >
+        <View style={{justifyContent: 'center', alignSelf: 'center'}}>
+          <Image style={{width: 100, height: 100, resizeMode: 'contain'}} source={require('./../assets/images/successicon.png')} />
+        </View>
+        <Text style={{textAlign: 'center'}}>Your recipe is successfully posted!</Text>
+        <Button
+          containerStyle={{padding: 5, width: 300, alignSelf: 'center', position: 'absolute', bottom: 0, marginBottom: 10}}
+          titleStyle={{fontSize: 17, fontWeight: 'bold'}}
+          buttonStyle={{borderRadius: 20, marginRight: 0, marginBottom: 0}}
+          title="DONE" 
+          onPress={() => {
+            this.setState({showPostedRecipeOnSuccessDialog: false});
+            this.props.navigation.navigate('HomepageScreen');
+          }}                
+        />
+
+      </Overlay>
     );
+  }
 
-    try {
-
-    } catch (error) {
-
-    }
-
+  /***************************************************
+   * Dialog to display when a recipe failed to post to DB.
+   ****************************************************/
+  renderPostRecipeOnFailure() {
+    return (
+      <Overlay 
+        isVisible={this.state.showPostedRecipeOnFailureDialog}
+        overlayStyle={{
+          width: Dimensions.get('window').width - 50,
+          height: 250,
+          borderRadius: 20
+        }}
+        onBackdropPress={() => {
+          this.setState({showPostedRecipeOnFailureDialog: true});
+        }}
+      >
+        <View style={{justifyContent: 'center', alignSelf: 'center', marginTop: 20}}>
+          <Image style={{width: 100, height: 100, resizeMode: 'contain'}} source={require('./../assets/images/warning.jpg')} />
+        </View>
+        <Text style={{textAlign: 'center'}}>Sorry, there was something wrong :(</Text>
+        <Text style={{textAlign: 'center'}}>Please try again later.</Text>
+        <Button
+          containerStyle={{padding: 5, width: 300, alignSelf: 'center', position: 'absolute', bottom: 0, marginBottom: 10}}
+          titleStyle={{fontSize: 17, fontWeight: 'bold'}}
+          buttonStyle={{borderRadius: 20, marginRight: 0, marginBottom: 0}}
+          title="BACK HOME" 
+          onPress={() => {
+            this.setState({showPostedRecipeOnFailureDialog: false});
+            this.props.navigation.navigate('HomepageScreen');
+          }}                
+        />
+      </Overlay>
+    );
   }
   
   /***************************************************
@@ -229,8 +314,10 @@ export default class PostNewRecipe extends Component {
     );
   }
 
+  /********************************************************
+   * Render recipe form view
+  *********************************************************/
   renderFormView() {
-
 
     return (
       <View style={{paddingTop: 10, width: FORM_CONTAINER_WIDTH - 50}}>  
@@ -343,12 +430,25 @@ export default class PostNewRecipe extends Component {
             });
           }}  
         />
+
+        {this.renderPostRecipeOnSuccess()}
+        {this.renderPostRecipeOnFailure()}
       </View>
     );
 
   }
 
   render() {
+
+    if (this.state.isLoading) {
+      return (
+        <View style={{ flex: 1, justifyContent: 'center' }}>
+          <ActivityIndicator size="large" color="#0000ff" />
+          <Text style={{textAlign: 'center', marginTop: 20}}>We're fetching your data...</Text>
+          <Text style={{textAlign: 'center'}}>Hold on tight...</Text>
+        </View>
+      );
+    }
 
     return (
       <SafeAreaView style={styles.containerSafeArea}>

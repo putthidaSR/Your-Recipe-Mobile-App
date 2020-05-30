@@ -17,7 +17,7 @@ export default class ViewMyRecipes extends Component {
 
     this.state = {
 
-      isLoading: true, // flag to indicate whether the screen is still loading
+      isLoading: false, // flag to indicate whether the screen is still loading
 
       totalRecipesUploaded: 0,
       recipeSummaryList: [],
@@ -69,10 +69,11 @@ export default class ViewMyRecipes extends Component {
     console.log('Attempt to send request to get recipe summary list');
     const URL = SERVER_IP_ADDRESS + '/recipes/' + this.state.username;
     console.log('Request URL', URL);
+    this.setState({isLoading: true});
 
     try {
       const response = await axios.get(URL);
-      console.log(response.data);
+      //console.log(response.data);
 
       this.setState({isLoading: false});
 
@@ -94,6 +95,8 @@ export default class ViewMyRecipes extends Component {
   ****************************************************************/
   handleEditRecipeName = async() => {
 
+    this.setState({isLoading: true});
+
     console.log('Attempt to edit recipe name');
     
     const URL = SERVER_IP_ADDRESS + '/recipes/' + this.state.newRecipeName + '/' + this.state.targetedRecipeId;
@@ -105,7 +108,7 @@ export default class ViewMyRecipes extends Component {
 
       if (response.data.status === 200) {
         console.log('Successfully updated!');
-        this.getRecipeSummaryList();
+        //this.getRecipeSummaryList();
       } else {
         console.log('Error', response.data);
       }
@@ -121,9 +124,10 @@ export default class ViewMyRecipes extends Component {
   handleDeleteRecipe = async() => {
 
     console.log('Attempt to delete a recipe');
+    this.setState({isLoading: true});
 
     const URL = SERVER_IP_ADDRESS + '/recipes/' + this.state.targetedRecipeId;
-    console.log('Request URL', URL);
+    console.log('Deletion Request URL', URL);
 
     try {
       const response = await axios.delete(URL);
@@ -132,7 +136,7 @@ export default class ViewMyRecipes extends Component {
 
       if (response.data.status === 200) {
         console.log('Successfully deleted!');
-        this.getRecipeSummaryList();    
+        //this.getRecipeSummaryList();    
       } else {
         console.log('Error deleting recipe', response.data);
       }
@@ -150,8 +154,7 @@ export default class ViewMyRecipes extends Component {
     console.log('Attempt to send request to view full recipe');
     const URL = SERVER_IP_ADDRESS + '/recipes/details/' + recipeId;
     console.log('Request URL to view detailed recipe', URL);
-
-    // http://localhost:8080/recipes/details/1
+    this.setState({isLoading: true});
 
     try {
 
@@ -232,11 +235,14 @@ export default class ViewMyRecipes extends Component {
           }
         >
           <ModalContent>
-            <TextField
-              style={{marginTop: 50}}
-              placeholder={'Enter the name'}
-              onChangeText = {(newRecipeName) => this.setState({newRecipeName})}
-            />
+            <View>
+              <TextField
+                style={{marginTop: 50}}
+                placeholder={'Enter the name'}
+                onChangeText = {(newRecipeName) => this.setState({newRecipeName})}
+              />
+            </View>
+            
           </ModalContent>
         </Modal>
       </View>
@@ -273,6 +279,7 @@ export default class ViewMyRecipes extends Component {
             <ModalFooter style={{borderBottomColor: '#b5b5b5',borderBottomWidth: 1,position: 'absolute',bottom: 0}}>
               <ModalButton text="Delete" bordered
                 onPress={() => {
+                  console.log('Attempt to delete!');
                   this.handleDeleteRecipe();
                   this.setState({ showDeleteRecipeModal: false });
                 }}
@@ -326,77 +333,78 @@ export default class ViewMyRecipes extends Component {
         }}
         onBackdropPress={() => {this.setState({showViewFullRecipeModal: true});}}
       >
-        <View style={{}}>
+        <View>
+          <View style={{padding: 10, marginBottom: 20}}>
+            <ScrollView style={{paddingBottom: 10}} contentContainerStyle={{height: LIST_VIEW_HEIGHT * 2}}>
 
-          <ScrollView contentContainerStyle={{height: LIST_VIEW_HEIGHT * 2}}>
+              <ListItem
+                title={'Recipe Origin'}
+                titleStyle={styles.questionTitleText}
+                subtitle={this.state.recipeDetails.countryName}
+                leftIcon={<Image style={{width: 60, height: 60}} source={require('./../assets/images/foodicon.png')} />}
+                bottomDivider
+              />
 
-            <ListItem
-              title={'Recipe Origin'}
-              titleStyle={styles.questionTitleText}
-              subtitle={this.state.recipeDetails.countryName}
-              leftIcon={<Image style={{width: 60, height: 60}} source={require('./../assets/images/foodicon.png')} />}
-              bottomDivider
-            />
+              <ListItem
+                title={'Time Needed'}
+                titleStyle={styles.questionTitleText}
+                subtitle={this.state.recipeDetails.timeNeeded}
+                leftIcon={<Image style={{width: 60, height: 60}} source={require('./../assets/images/foodicon.png')} />}
+                bottomDivider
+              />
 
-            <ListItem
-              title={'Time Needed'}
-              titleStyle={styles.questionTitleText}
-              subtitle={this.state.recipeDetails.timeNeeded}
-              leftIcon={<Image style={{width: 60, height: 60}} source={require('./../assets/images/foodicon.png')} />}
-              bottomDivider
-            />
-
-            <ListItem
-              title={'Ease of Preparation'}
-              titleStyle={styles.questionTitleText}
-              subtitle={this.state.recipeDetails.difficultyLevel}
-              leftIcon={<Image style={{width: 60, height: 60}} source={require('./../assets/images/foodicon.png')} />}
-              bottomDivider
-            />
+              <ListItem
+                title={'Ease of Preparation'}
+                titleStyle={styles.questionTitleText}
+                subtitle={this.state.recipeDetails.difficultyLevel}
+                leftIcon={<Image style={{width: 60, height: 60}} source={require('./../assets/images/foodicon.png')} />}
+                bottomDivider
+              />
             
-            <ListItem
-              title={'Meal Type'}
-              titleStyle={styles.questionTitleText}
-              subtitle={this.state.recipeDetails.foodType.map((a) => `${a.name},`).join(' ').slice(0, -1)}
-              leftIcon={<Image style={{width: 60, height: 60}} source={require('./../assets/images/foodicon.png')} />}
-              bottomDivider
-            />
+              <ListItem
+                title={'Meal Type'}
+                titleStyle={styles.questionTitleText}
+                subtitle={this.state.recipeDetails.foodType.map((a) => `${a.name},`).join(' ').slice(0, -1)}
+                leftIcon={<Image style={{width: 60, height: 60}} source={require('./../assets/images/foodicon.png')} />}
+                bottomDivider
+              />
 
-            <ListItem
-              title={'Diet Type'}
-              titleStyle={styles.questionTitleText}
-              subtitle={this.state.recipeDetails.dietType.map((a) => `${a.name},`).join(' ').slice(0, -1)}
-              leftIcon={<Image style={{width: 60, height: 60}} source={require('./../assets/images/foodicon.png')} />}
-              bottomDivider
-            />
+              <ListItem
+                title={'Diet Type'}
+                titleStyle={styles.questionTitleText}
+                subtitle={this.state.recipeDetails.dietType.map((a) => `${a.name},`).join(' ').slice(0, -1)}
+                leftIcon={<Image style={{width: 60, height: 60}} source={require('./../assets/images/foodicon.png')} />}
+                bottomDivider
+              />
             
-            <ListItem
-              title={'Ingredient List'}
-              titleStyle={styles.questionTitleText}
-              subtitle={this.state.recipeDetails.ingredients.map((a, index) => `${index + 1}.  ${a.name}\n`).join('')}
-              leftIcon={<Image style={{width: 60, height: 60}} source={require('./../assets/images/foodicon.png')} />}
-              bottomDivider
-            />
+              <ListItem
+                title={'Ingredient List'}
+                titleStyle={styles.questionTitleText}
+                subtitle={this.state.recipeDetails.ingredients.map((a, index) => `${index + 1}.  ${a.name}\n`).join('')}
+                leftIcon={<Image style={{width: 60, height: 60}} source={require('./../assets/images/foodicon.png')} />}
+                bottomDivider
+              />
 
-            <ListItem
-              title={'Cooking Direction'}
-              titleStyle={styles.questionTitleText}
-              subtitle={this.state.recipeDetails.cookingSteps.map((a, index) => `Step ${index + 1}\n${a.step}\n\n`).join('')}
-              leftIcon={<Image style={{width: 60, height: 60}} source={require('./../assets/images/foodicon.png')} />}
-              bottomDivider
-            />
+              <ListItem
+                title={'Cooking Direction'}
+                titleStyle={styles.questionTitleText}
+                subtitle={this.state.recipeDetails.cookingSteps.map((a, index) => `Step ${index + 1}\n${a.step}\n\n`).join('')}
+                leftIcon={<Image style={{width: 60, height: 60}} source={require('./../assets/images/foodicon.png')} />}
+                bottomDivider
+              />
 
-          </ScrollView>
+            </ScrollView></View>
+
+          <Button
+            containerStyle={{padding: 5, width: 300, alignSelf: 'center', position: 'absolute', bottom: 0, marginBottom: 10}}
+            titleStyle={{fontSize: 17, fontWeight: 'bold'}}
+            buttonStyle={{borderRadius: 20, marginRight: 0, marginBottom: 0}}
+            title="Close" 
+            onPress={() => this.setState({showViewFullRecipeModal: false})}                
+          />
+
         </View>
         
-        <Button
-          containerStyle={{padding: 5, width: 300, alignSelf: 'center', position: 'absolute', bottom: 0, marginBottom: 10}}
-          titleStyle={{fontSize: 17, fontWeight: 'bold'}}
-          buttonStyle={{borderRadius: 20, marginRight: 0, marginBottom: 0}}
-          title="Close" 
-          onPress={() => this.setState({showViewFullRecipeModal: false})}                
-        />
-
       </Overlay>
     );
   }
@@ -467,7 +475,7 @@ export default class ViewMyRecipes extends Component {
                 {this.renderDeleteRecipe()}
               </View>
 
-              <Text style={{textAlign: 'right', padding: 5, marginTop: 5}}>Date Posted: {moment(data.latestUpdate).format('MMMM D, YYYY, HH:mm A')}</Text>
+              <Text style={{textAlign: 'right', padding: 5, marginTop: 5}}>Date Posted: {moment(data.latestUpdate).subtract(7, 'hours').format('MMMM D, YYYY, HH:mm A')}</Text>
             </Card>
             
           ))
@@ -514,12 +522,11 @@ const LIST_VIEW_HEIGHT = 2 * WHOLE_HEIGHT_VIEW / 3;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff'
   },
   scrollViewContainer: {
     alignSelf: 'center',
-    marginTop: '5%',
-    marginBottom: '5%',
+    marginTop: '15%',
+    marginBottom: '15%',
   },
   topViewContainer: {
     alignSelf: 'center', 

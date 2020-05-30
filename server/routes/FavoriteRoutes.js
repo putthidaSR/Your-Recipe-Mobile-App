@@ -3,13 +3,10 @@ var router = express.Router();
 
 const favoriteRecipe = require("../controllers/FavoriteRecipeController.js");
 
-// Add a new favorite recipe
-router.post("/");
+// Add favorite recipe to the specified user
+router.post("/", favoriteRecipe.create);
 
 // Retrieve all favorite recipes that belong to a specific user
-router.get("/:username");
-
-// Remove a specific favorite recipe that belongs to a specific user
-router.delete("/:username/:favoriteRecipeId");
+router.get("/:username", favoriteRecipe.findAll);
 
 module.exports = router;
