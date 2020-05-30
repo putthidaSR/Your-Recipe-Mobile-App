@@ -7,6 +7,6 @@ import App from './src/App';
 import {name as appName} from './app.json';
 
 // Disable Yellow warning messsage box during debugging
-//console.disableYellowBox = true;
+console.disableYellowBox = true;
 
 AppRegistry.registerComponent(appName, () => App);
