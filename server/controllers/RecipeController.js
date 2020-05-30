@@ -190,3 +190,128 @@ exports.search = (req, res) => {
 	});
 }
 
+
+
+exports.create = (req, res) => {
+  
+  var hasError = false;
+
+  var insertRecipeSql = `INSERT INTO Recipe(name, user_name) VALUES ('${req.body.recipeName}', '${req.body.username}')`;
+  mysql.query(insertRecipeSql, function (error, results) {
+
+
+		if (error) {
+      hasError = true;
+    } else {
+      
+      /*
+       * Select id of the newly added recipe above
+       */
+      var selectIdSql = `SELECT id FROM Recipe WHERE name = '${req.body.recipeName}' AND user_name = '${req.body.username}'
+        ORDER BY id DESC`;
+      
+        mysql.query(selectIdSql, function (error, results) {
+
+          if (!error) {
+            
+            var recipeId = results[0].id;
+            var insertRecipeDetailsSql = `INSERT INTO RecipeDetails(recipe_id, time_needed, difficulty_level)
+              VALUES ('${recipeId}', '${req.body.timeNeeded}', '${req.body.difficultyLevel}')`;
+
+            console.log('Attempt to insert a new recipeDetails with recipeId = ' + recipeId);
+            mysql.query(insertRecipeDetailsSql, function (error, results) {
+
+              if (!error) {
+
+                console.log('Attempt to select recipeDetailsId');
+                mysql.query(`SELECT id FROM RecipeDetails ORDER BY id DESC`, function (error, results) {
+
+                  if (!error) {
+
+                    var recipeDetailId = JSON.stringify(results[0].id);
+                    console.log('Attempt to insert recipeOrigin', recipeDetailId)
+
+                    mysql.query(`INSERT INTO RecipeOrigin(country_name, recipeDetails_id) VALUES ('${req.body.origin}', '${recipeDetailId}')`, function (error, results) {
+
+                      if (!error) {
+
+                        req.body.dietType.forEach((element) => {
+                          console.log('Insert dietType value: ', element);
+                          mysql.query( `INSERT INTO DietType(recipeDetails_id, name) VALUES ('${recipeDetailId}', '${element}')`, function (error, results) {
+
+                            if (error) {
+                              console.log("Error inserting diet type", element, error);
+                              hasError = true;
+                            }
+                          });
+
+                        })
+            
+                        req.body.foodType.forEach((element) => {
+                          console.log('Insert FoodType value: ', element);
+                          mysql.query( `INSERT INTO FoodType(recipeDetails_id, name) VALUES ('${recipeDetailId}', '${element}')`, function (error, results) {
+
+                            if (error) {
+                              console.log("Error inserting food type", element, error);
+                              hasError = true;
+                            }
+                          });
+                        })
+            
+                        req.body.ingredientList.forEach((element) => {
+                          console.log('Insert ingredient value: ', element);
+                          mysql.query( `INSERT INTO Ingredient(name, recipeDetails_id) VALUES ('${element}','${recipeDetailId}')`, function (error, results) {
+
+                            if (error) {
+                              console.log("Error inserting ingredient", element, error);
+                              hasError = true;
+                            }
+                          });
+                        })
+
+                        req.body.cookingSteps.forEach((element) => {
+                          console.log('Insert direction value: ', element);
+                          mysql.query( `INSERT INTO Direction(step, recipeDetails_id) VALUES ('${element}', '${recipeDetailId}')`, function (error, results) {
+
+                            if (error) {
+                              console.log("Error inserting ingredient type", element, error);
+                              hasError = true;
+                            }
+                          });
+                        })
+        
+                      } else {
+                        console.log('errorrrr', error);
+                        hasError = true;
+                      }
+                    });
+    
+                  }
+                });
+
+              } else {
+                hasError = true;
+              }
+            });
+
+          } else {
+            hasError = true;
+          }
+        });
+    }
+  });
+  
+  if (!hasError) {
+    // Request is sucessful.
+    res.send(JSON.stringify({
+      "status": 200, 
+      "response": 'New Recipe is successfully created.'
+    }));
+  } else {
+    // Handle any errors found while communicating with the DB
+    res.send(JSON.stringify({
+      "status": 500,
+      "error": error
+    }));
+  }
+}

@@ -4,7 +4,7 @@ var router = express.Router();
 const recipes = require("../controllers/RecipeController.js");
 
 // Create (post) a new recipe
-router.post("/add");
+router.post("/", recipes.create);
 
 // Delete a specific recipe that belongs to the specific user (ie: user who is currently logged in to the app)
 router.delete("/:recipeId", recipes.deleteOne);
