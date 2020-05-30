@@ -1,5 +1,6 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, { Component } from 'react'	;
-import { StyleSheet, Text, Alert, TextInput, TouchableOpacity, View, Dimensions } from 'react-native';
+import { StyleSheet, Text, Alert, TextInput, ActivityIndicator, TouchableOpacity, View, Dimensions } from 'react-native';
 import axios from 'axios';
 import {SERVER_IP_ADDRESS, USER_KEY_STORAGE} from '../../serverConfig';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -12,7 +13,8 @@ export default class SignInForm extends Component {
     this.state = {
       username: '',
       password: '',
-      errorMessage: ''
+      errorMessage: '',
+      isLoading: false, // flag to indicate whether the screen is still loading
     };
     this.handleSignInUser = this.handleSignInUser.bind(this);
   }
@@ -21,7 +23,7 @@ export default class SignInForm extends Component {
    * Check if user is successfully logged in to the app.
    */
   async handleSignInUser() {
-    
+
     if (this.state.username.length === 0 || this.state.password.length === 0) {
       Alert.alert(
         'Failed to Sign-in',
@@ -32,13 +34,14 @@ export default class SignInForm extends Component {
       return;
     }
 
+    this.setState({isLoading: true});
     const URL = SERVER_IP_ADDRESS + '/users/' + this.state.username + '/' + this.state.password;
     console.log('Request URL', URL);
 
     try {
 
       const response = await axios.get(URL);
-      console.log(response.data);
+      this.setState({isLoading: false});
 
       if (response.data.status !== 200) {
         console.log('User not found', response.data.response);
@@ -67,12 +70,25 @@ export default class SignInForm extends Component {
         [{ text: 'OK' }],
         { cancelable: false },
       );
+      this.setState({isLoading: false});
+
     }
 
   }
 
   render() {
 
+    if (this.state.isLoading) {
+      //Loading View while data is loading
+      return (
+        <View style={{ flex: 1, justifyContent: 'center' }}>
+          <ActivityIndicator size="large" color="#0000ff" />
+          <Text style={{textAlign: 'center', marginTop: 20}}>Hang on!!!</Text>
+          <Text style={{textAlign: 'center'}}>Loading...</Text>
+        </View>
+      );
+    }
+    
     return (
       <View style={styles.container}>
 

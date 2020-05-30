@@ -1,8 +1,10 @@
 import React from 'react';
-import { View } from 'react-native';
 import InitialRouter from './routers/InitialRouter';
 import * as eva from '@eva-design/eva';
-import { ApplicationProvider, Text } from '@ui-kitten/components';
+import { ApplicationProvider } from '@ui-kitten/components';
+
+import AsyncStorage from '@react-native-community/async-storage';
+import {USER_KEY_STORAGE} from './serverConfig';
 
 /**
  * The first component that the application will render when the app is loaded.
@@ -13,22 +15,34 @@ export default class App extends React.Component {
     super(props);
 
     this.state = {
-      isLoading: true, // a flag to track if the app is still loading; true for loading
       isSignedIn: false // a flag to track if user is already logged in to the app
     };
   }
 
-  render() {
+  /**
+   * Get initial data when component is first mounted.
+   */
+  componentDidMount() {
+    this.getUsername();
+  }
 
-    console.log('isSignedIn', this.state.isSignedIn);
-    // TODO: Create splashing screen to check app loading
-    if (this.state.isLoading) {
-      <View><Text>Still loading...</Text></View>;
+  getUsername = async () => {
+    try {
+      const value = await AsyncStorage.getItem(USER_KEY_STORAGE);
+      if (value !== null) {
+        console.log('User is already logged in', value);
+        this.setState({isSignedIn: true});
+      }    
+    } catch (error) {
+      console.log('Error getting username', error);
     }
+  }
+
+  render() {
 
     return (
       <ApplicationProvider {...eva} theme={eva.light}>
-        <InitialRouter />
+        <InitialRouter isUserSignedIn = {this.state.isSignedIn} />
       </ApplicationProvider>
     );
   }

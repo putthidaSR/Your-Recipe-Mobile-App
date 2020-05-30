@@ -26,7 +26,6 @@ export default class AccountScreen extends Component {
    */
   componentDidMount() {
     this.getUsername();
-    this.getCookLevelStatus();
   }
 
   /***************************************************************
@@ -37,6 +36,9 @@ export default class AccountScreen extends Component {
       const value = await AsyncStorage.getItem(USER_KEY_STORAGE);
       if (value !== null) {
         this.setState({username: value});
+
+        this.getCookLevelStatus();
+        this.getTotalNumRecipesPosted();
       }    
     } catch (error) {
       console.log('Error getting username', error);
@@ -48,7 +50,7 @@ export default class AccountScreen extends Component {
   ****************************************************************/
   getCookLevelStatus = async() => {
     
-    const URL = SERVER_IP_ADDRESS + '/users/stored/status/' + 'user_1';
+    const URL = SERVER_IP_ADDRESS + '/users/stored/status/' + this.state.username;
     console.log('Request URL', URL);
 
     try {
@@ -76,7 +78,7 @@ export default class AccountScreen extends Component {
   getTotalNumRecipesPosted = async() => {
 
     console.log('Attempt to send request to get recipe summary list');
-    const URL = SERVER_IP_ADDRESS + '/recipes/' + 'user_1';
+    const URL = SERVER_IP_ADDRESS + '/recipes/' + this.state.username;
     console.log('Request URL', URL);
 
     try {

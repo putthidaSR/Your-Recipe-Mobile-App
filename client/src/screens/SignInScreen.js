@@ -19,9 +19,9 @@ export default class SignInScreen extends Component {
           <View style={styles.logoContainer}>
             <Image
               style={styles.logo}
-              source={require('./../assets/images/add.png')}
+              source={require('./../assets/images/meal5.png')}
             />
-            <Text style={styles.titleText}>From Our Kitchen to Yours...</Text>
+            <Text style={styles.titleText}>From TCSS545's Kitchen to Yours...</Text>
           </View>
 
           {/** Form container */}
@@ -56,16 +56,20 @@ const styles = StyleSheet.create({
     height: 100,
   },
   titleText: {
-    color: '#FFF',
+    color: '#fff',
     marginTop: 15,
     width: 200,
     textAlign: 'center',
-    opacity: 0.7,
+    opacity: 1,
+    fontSize: 20,
+    fontWeight: 'bold',
+    fontFamily: 'AmericanTypewriter-Bold'
   },
   formContainer: {
     alignItems: 'center',
     justifyContent: 'center',
     flex: 1,
-    marginBottom: 50,
+    backgroundColor: '#3498db',
+    borderRadius: 50
   },
 });

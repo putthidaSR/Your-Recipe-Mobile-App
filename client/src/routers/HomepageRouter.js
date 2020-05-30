@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, { Component } from 'react';
 import { Image } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -91,7 +92,7 @@ function HomepageStack() {
 
   const Stack = createStackNavigator();
 
-  return(
+  return (
     <Stack.Navigator screenOptions={{ headerShown: false }} >
       <Stack.Screen name="HomepageScreen" component={HomepageScreen} />
       <Stack.Screen name="PostNewRecipe" component={PostNewRecipe} />

@@ -1,10 +1,9 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {Component} from 'react';
-import {StyleSheet, Text, Platform, View, SafeAreaView, Dimensions, Image} from 'react-native';
+import {StyleSheet, Text, Platform, View, SafeAreaView, Dimensions} from 'react-native';
 import {Colors, Card} from 'react-native-ui-lib';
 import AsyncStorage from '@react-native-community/async-storage';
-import {SERVER_IP_ADDRESS, USER_KEY_STORAGE} from '../serverConfig';
-import axios from 'axios';
+import {USER_KEY_STORAGE} from '../serverConfig';
 
 export default class HomepageScreen extends Component {
 

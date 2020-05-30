@@ -6,11 +6,9 @@ import AsyncStorage from '@react-native-community/async-storage';
 import {SERVER_IP_ADDRESS, USER_KEY_STORAGE} from '../serverConfig';
 import axios from 'axios';
 import Modal, { ModalContent, ModalTitle, ModalFooter, ModalButton, ScaleAnimation, } from 'react-native-modals';
-import { Overlay, Card, Button, Divider, ListItem } from 'react-native-elements';
+import { Overlay, Card, Button, ListItem } from 'react-native-elements';
 import {TextField} from 'react-native-ui-lib';
 import moment from 'moment';
-
-import {VIEW_ONE_RECIPE_WITH_DETAILS, VIEW_POSTED_RECIPES_DATA} from './../utilities/SampleTestData';
 
 export default class ViewMyRecipes extends Component {
 
@@ -21,7 +19,6 @@ export default class ViewMyRecipes extends Component {
 
       isLoading: true, // flag to indicate whether the screen is still loading
 
-      fullRecipeData: {},
       totalRecipesUploaded: 0,
       recipeSummaryList: [],
       targetedRecipeId: 0,
@@ -46,7 +43,6 @@ export default class ViewMyRecipes extends Component {
 
   componentDidMount() {
     this.getUsername();
-    this.getRecipeSummaryList();
   }
 
   /***************************************************************
@@ -57,6 +53,7 @@ export default class ViewMyRecipes extends Component {
       const value = await AsyncStorage.getItem(USER_KEY_STORAGE);
       if (value !== null) {
         this.setState({username: value});
+        this.getRecipeSummaryList();
       }    
     } catch (error) {
       console.log('Error getting username', error);
@@ -70,7 +67,7 @@ export default class ViewMyRecipes extends Component {
   getRecipeSummaryList = async() => {
 
     console.log('Attempt to send request to get recipe summary list');
-    const URL = SERVER_IP_ADDRESS + '/recipes/' + 'user_1';
+    const URL = SERVER_IP_ADDRESS + '/recipes/' + this.state.username;
     console.log('Request URL', URL);
 
     try {
@@ -174,7 +171,6 @@ export default class ViewMyRecipes extends Component {
             cookingSteps: results.cookingSteps
           },
           isLoading: false,
-          fullRecipeData: VIEW_ONE_RECIPE_WITH_DETAILS,
           showViewFullRecipeModal: true
         });
 

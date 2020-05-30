@@ -1,11 +1,10 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {Component} from 'react';
 import {StyleSheet, SafeAreaView, Text, View, ScrollView, Dimensions, Image, ActivityIndicator} from 'react-native';
-import { ButtonGroup, Button, Divider, ListItem, Overlay } from 'react-native-elements';
+import { ButtonGroup, Button, ListItem, Overlay } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Ionicons';
 import axios from 'axios';
-import {SERVER_IP_ADDRESS, USER_KEY_STORAGE} from '../serverConfig';
-import AsyncStorage from '@react-native-community/async-storage';
+import {SERVER_IP_ADDRESS} from '../serverConfig';
 
 import {FULL_RECIPE_DATA} from './../utilities/SampleTestData';
 
