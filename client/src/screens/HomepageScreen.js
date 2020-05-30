@@ -55,7 +55,6 @@ export default class HomepageScreen extends Component {
 
   render() {
 
-
     return (
       <SafeAreaView style={styles.container}>
 

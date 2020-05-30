@@ -481,6 +481,18 @@ export default class ViewMyRecipes extends Component {
   }
   
   render() {
+
+    if (this.state.isLoading) {
+      //Loading View while data is loading
+      return (
+        <View style={{ flex: 1, justifyContent: 'center' }}>
+          <ActivityIndicator size="large" color="#0000ff" />
+          <Text style={{textAlign: 'center', marginTop: 20}}>We're fetching your data...</Text>
+          <Text style={{textAlign: 'center'}}>Hold on tight...</Text>
+        </View>
+      );
+    }
+
     return (
       <SafeAreaView style={styles.container}>
 
