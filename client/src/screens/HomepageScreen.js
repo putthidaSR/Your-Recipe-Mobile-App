@@ -3,22 +3,19 @@ import React, {Component} from 'react';
 import {StyleSheet, Text, Platform, View, SafeAreaView, Dimensions} from 'react-native';
 import {Colors, Card} from 'react-native-ui-lib';
 import AsyncStorage from '@react-native-community/async-storage';
-import {SERVER_IP_ADDRESS, USER_KEY_STORAGE} from '../serverConfig';
-import axios from 'axios';
+import {USER_KEY_STORAGE} from '../serverConfig';
 
 export default class HomepageScreen extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      username: '',
-      cookingLevelStatus: ':('
+      username: ''
     };
   }
 
   componentDidMount() {
     this.getUsername();
-    this.getCookLevelStatus();
   }
 
   getUsername = async () => {
@@ -32,29 +29,7 @@ export default class HomepageScreen extends Component {
     }
   }
 
-  getCookLevelStatus = async() => {
-    
-    const URL = SERVER_IP_ADDRESS + '/users/stored/status/' + 'user_1';
-    console.log('Request URL', URL);
-
-    try {
-
-      const response = await axios.get(URL);
-      console.log(response.data);
-
-      if (response.data.status === 200) {
-        this.setState({cookingLevelStatus: response.data.data[0].UserCookingLevel});
-      } else {
-        console.log('Failed to get user status', response.data);
-      }
-
-    } catch (error) {
-      console.log('Error retrieving user cooking status', error);
-    }
-  }
-
   render() {
-
 
     return (
       <SafeAreaView style={styles.container}>
@@ -79,7 +54,6 @@ export default class HomepageScreen extends Component {
         <View style={{backgroundColor: '#05b6ff', position: 'absolute', top: 0, left: 0, 
           width: Dimensions.get('window').width, height: 250}} />
         <Text style={{...styles.titleText, top: 90, left: 20, fontSize: Platform.OS === 'ios' ? 45 : 25, color: 'white'}}>Welcome, {this.state.username}!</Text>
-        <Text style={{top: 150, left: 20, fontSize: 20, color: 'white'}}>Your current status: {this.state.cookingLevelStatus}</Text>
       </View>
     );
   }

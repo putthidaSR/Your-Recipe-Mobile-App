@@ -47,6 +47,29 @@ exports.deleteOne = (req, res) => {
 	});
 }
 
+exports.updateOne = (req, res) => {
+
+  mysql.query(`UPDATE Recipe SET name = '${req.params.newRecipeName}' WHERE id = '${req.params.recipeId}'`, function (error, results) {
+
+		if (error) {
+
+      // Handle any errors found while communicating with the DB
+      res.send(JSON.stringify({
+        "status": 500,
+        "error": error
+      })); 
+
+    } else {
+
+      // Request is sucessful.
+      res.send(JSON.stringify({
+        "status": 200, 
+        "response": results
+      }));
+    }
+	});
+}
+
 exports.findOneDetailRecipe = (req, res) => {
 
   mysql.query(`SELECT * FROM RecipeDetails WHERE recipe_id = '${req.params.recipeId}'`, function (error, results) {

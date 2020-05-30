@@ -1,5 +1,6 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, { Component } from 'react';
-import { StyleSheet, Alert, Text, TextInput, TouchableOpacity, View, Dimensions } from 'react-native';
+import { StyleSheet, Alert, Text, TextInput, TouchableOpacity, View, Dimensions, ActivityIndicator } from 'react-native';
 
 import axios from 'axios';
 import {SERVER_IP_ADDRESS} from '../../serverConfig';
@@ -14,7 +15,8 @@ export default class SignUpForm extends Component {
       password: '',
       email: '',
       username: '',
-      errorMessage: ''
+      errorMessage: '',
+      isLoading: false, // flag to indicate whether the screen is still loading
     };
 
     this.handleSignUpUser = this.handleSignUpUser.bind(this);
@@ -33,6 +35,8 @@ export default class SignUpForm extends Component {
       return;
     }
 
+    this.setState({isLoading: true});
+
     const URL = SERVER_IP_ADDRESS + '/users/';
     console.log('POST Request URL', URL);
 
@@ -44,7 +48,8 @@ export default class SignUpForm extends Component {
         email: email
       });
 
-      console.log('response', response);
+      this.setState({isLoading: false});
+
       if (response.data.status !== 200) {
         console.log('Failed to sign up', response.data.response);
         Alert.alert(
@@ -76,6 +81,17 @@ export default class SignUpForm extends Component {
 
   render() {
 
+    if (this.state.isLoading) {
+      //Loading View while data is loading
+      return (
+        <View style={{ flex: 1, justifyContent: 'center' }}>
+          <ActivityIndicator size="large" color="#0000ff" />
+          <Text style={{textAlign: 'center', marginTop: 20}}>Hang on!!!</Text>
+          <Text style={{textAlign: 'center'}}>Loading...</Text>
+        </View>
+      );
+    }
+    
     return (
       <View style={styles.container}>
 

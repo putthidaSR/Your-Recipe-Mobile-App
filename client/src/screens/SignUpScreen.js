@@ -24,9 +24,9 @@ export default class SignUpScreen extends Component {
           <View style={styles.logoContainer}>
             <Image
               style={styles.logo}
-              source={require('./../assets/images/add.png')}
+              source={require('./../assets/images/meal6.png')}
             />
-            <Text style={styles.titleText}>Join us for more yummy...</Text>
+            <Text style={styles.titleText}>Join us for more yummy food...</Text>
           </View>
 
           {/** Form container */}
@@ -70,7 +70,8 @@ const styles = StyleSheet.create({
     marginTop: 15,
     width: 200,
     textAlign: 'center',
-    opacity: 0.7
+    fontSize: 20,
+    fontFamily: 'AmericanTypewriter-Bold'
   },
   formContainer: {
     alignItems: 'center',
