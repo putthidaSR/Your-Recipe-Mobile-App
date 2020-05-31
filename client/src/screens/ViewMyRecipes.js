@@ -434,7 +434,7 @@ export default class ViewMyRecipes extends Component {
                 />
               </View>
 
-              <Text style={{textAlign: 'right', padding: 5, marginTop: 5}}>Date Posted: {moment(data.latestUpdate).subtract(7, 'hours').format('MMMM D, YYYY, HH:mm A')}</Text>
+              <Text style={{textAlign: 'right', padding: 5, marginTop: 5}}>Date Posted: {moment(data.latestUpdate).format('MMMM D, YYYY, HH:mm A')}</Text>
             </Card>
             
           ))

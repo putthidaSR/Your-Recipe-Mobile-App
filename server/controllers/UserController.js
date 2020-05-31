@@ -1,6 +1,8 @@
 const mysql = require('../dbConfig.js');
 
-// Create and Save a new user
+/**
+ * Create and Save a new user
+ */
 exports.create = (req, res) => {
 
   // Validate request
@@ -115,7 +117,10 @@ exports.findAll = (req, res) => {
 	});
 }
 
-
+/**
+ * Get the cooking status of the specified user.
+ * Assume that function and stored procedure are already created in the Azure database.
+ */
 exports.findStatus = (request, response) => {
 
   let sql = `CALL GetUserCookingLevel('${request.params.username}', @UserCookingLevel)`;
