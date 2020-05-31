@@ -1,6 +1,22 @@
-# TCSS545 Final Project
+<h1 align="center">Your Secret Recipe Mobile Application</h1>
+
+
+<p align="center">
+ <b><br>University of Washington Tacoma</b><br>
+ <b>TCSS 545: Database Systems Design – Spring 2020</b><br><br>
+</p>
+
+The goal of this project is to design and implement the full-stack database application in which the database backend is to be implemented on cloud. We built a cross-platform hybrid mobile application that allows users to post and view different recipes. Some of the features include:
+- User Registration
+- Ability to post recipes 
+- Update/delete existing recipes
+- Search for specific recipes
+- Save your favorite recipes
+
+-----
 
 ## Project Structure Overview
+
 ```
 ├── assets
 ├── client
@@ -16,6 +32,9 @@
 │   ├── app.js
 │
 ```
+- `assets/` : store additional screenshots/diagrams
+- `client/` : store front-end code (mobile app)
+- `server/` : store back-end code to communicate with client, and all logics to communicate/connect with Azure Dabatase
 
 > See `README` under `client` directory and `server` directory for more details.
 
@@ -24,7 +43,7 @@
 ### Project Architecture
 ![ProjectArchitecture](https://github.com/putthidaSR/Your-Recipe-Mobile-App/blob/master/assets/diagrams/project-architecture.png)
 
-#### Our Technology Stack 
+#### Our Technology Stack:
 - **Front-End:** [React Native](https://reactnative.dev/)
 - **Back-End:** [Node.js](https://nodejs.org/en/) (with [Express.js](https://expressjs.com/) web framework)
 - **Database:** [Azure Database For MySQL](https://azure.microsoft.com/en-us/services/mysql/)
@@ -35,9 +54,22 @@
 ### Database Designs
 ![ERDiagram](https://github.com/putthidaSR/Your-Recipe-Mobile-App/blob/master/assets/diagrams/ER-diagram.png)
 
+
+The database schema above has been normalized into Four Normal Form (4NF), and there is no multi-valued dependencies. Azure Database For MySQL is used for data storage, querying and managing data.
+
+**Database functionalities that were used in the application includes:**
+- Transactions
+- Views
+- Indexing
+- Constraints (Keys, Attribute-based and Tuple-based check)
+- Triggers
+- Stored Procedure and Functions
+- Security and Authorization
+
+
 -----
 
-## How to run the Server
+## How to run the Server locally
 In the terminal:
 - Navigate to the server directory: `cd server`
 - Run: `npm install` (you only need to execute this for the first time or whenever new dependency is added)
@@ -48,7 +80,7 @@ In the terminal:
 
 > See `README` under `server` directory for more details.
 
-## How to run the Client
+## How to run the Client locally
 In another terminal:
 - Navigate to the client directory: `cd client`
 - Run `npm install` to install all dependencies.
@@ -64,7 +96,7 @@ In another terminal:
 
 Both client and server code are currently deployed to Heroku: `https://vast-bastion-59857.herokuapp.com/`
 
-- Push the latest code from master branch to Heroku: `git subtree push --prefix server heroku master`
+- Push the latest code from master branch to Heroku (admin only): `git subtree push --prefix server heroku master`
 - Access the front-end of the NodeJS application: `heroku open`
 - Restart the server: `heroku restart`
 - Display recent logs output: `heroku logs`
