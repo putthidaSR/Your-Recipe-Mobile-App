@@ -1,24 +1,41 @@
 # TCSS545 Final Project
 
-## Project Overview
+## Project Structure Overview
+```
+├── assets
+├── client
+│   ├── ios
+│   ├── android
+│   ├── src
+│   ├── index.js
+│   ├── package.json
+├── server
+│   ├── controllers
+│   ├── routes
+│   ├── views
+│   ├── app.js
+│
+```
 
+> See `README` under `client` directory and `server` directory for more details.
+
+-----
 
 ### Project Architecture
+![ProjectArchitecture](https://github.com/putthidaSR/Your-Recipe-Mobile-App/blob/master/assets/diagrams/project-architecture.png)
 
-- Client: React Native
-- Server: NodeJS (with Express web framework)
-- Database: ...
+#### Our Technology Stack 
+- **Front-End:** [React Native](https://reactnative.dev/)
+- **Back-End:** [Node.js](https://nodejs.org/en/) (with [Express.js](https://expressjs.com/) web framework)
+- **Database:** [Azure Database For MySQL](https://azure.microsoft.com/en-us/services/mysql/)
+- **Cloud Deployment (PaaS):** [Heroku](https://devcenter.heroku.com/start)
 
-
+-----
 
 ### Database Designs
+![ERDiagram](https://github.com/putthidaSR/Your-Recipe-Mobile-App/blob/master/assets/diagrams/ER-diagram.png)
 
-
-### Use Cases 
-
-Example:
-
-------------
+-----
 
 ## How to run the Server
 In the terminal:
@@ -29,7 +46,7 @@ In the terminal:
 
 > Note: Port number and server IP address can be updated in: `./server/bin/www`
 
-> Read `README` under `server` directory for more details.
+> See `README` under `server` directory for more details.
 
 ## How to run the Client
 In another terminal:
@@ -39,7 +56,7 @@ In another terminal:
 - Run on iOS: `react-native run-ios`
 - Run on Android: `react-native run-android`
 
-> Read `README` under `client` directory for more details.
+> See `README` under `client` directory for more details.
  
 -----
 
@@ -57,4 +74,23 @@ Both client and server code are currently deployed to Heroku: `https://vast-bast
 
 
 ----
-## Screenshot
+## Application Screenshots
+
+
+| Sign-up | Sign-in | Homepage | User Account |
+| :------: | :--------: | :--------: | :-----------: |
+| ![sign-up](https://github.com/putthidaSR/Your-Recipe-Mobile-App/blob/master/assets/screenshots/1%20-%20signup.png) | ![sign-in](https://github.com/putthidaSR/Your-Recipe-Mobile-App/blob/master/assets/screenshots/2%20-%20signin.png) | ![homepage](https://github.com/putthidaSR/Your-Recipe-Mobile-App/blob/master/assets/screenshots/3%20-%20homepage.png) |![account](https://github.com/putthidaSR/Your-Recipe-Mobile-App/blob/master/assets/screenshots/4%20-%20accountScreen.png) |
+
+| Post a New Recipe | Post a New Recipe | Upload Recipe | View All Recipes A Current Logged-in user Posted|
+| :------: | :--------: | :--------: | :-----------: |
+| ![post-recipe1](https://github.com/putthidaSR/Your-Recipe-Mobile-App/blob/master/assets/screenshots/5%20-%20post%20recipe1.png) | ![post-recipe2](https://github.com/putthidaSR/Your-Recipe-Mobile-App/blob/master/assets/screenshots/6%20-%20postrecipe2.png) | ![upload](https://github.com/putthidaSR/Your-Recipe-Mobile-App/blob/master/assets/screenshots/7%20-%20uploadrecipe.png) |![view-recipe](https://github.com/putthidaSR/Your-Recipe-Mobile-App/blob/master/assets/screenshots/8%20-%20view%20posted%20recipes.png) |
+
+| View Recipe Full Details | Edit Recipe Name | Recipe With Updated Name | Delete Recipe |
+| :------: | :--------: | :--------: | :-----------: |
+| ![full-details](https://github.com/putthidaSR/Your-Recipe-Mobile-App/blob/master/assets/screenshots/9%20-%20view%20full%20details.png) | ![edit-recipe-name](https://github.com/putthidaSR/Your-Recipe-Mobile-App/blob/master/assets/screenshots/10%20-%20editRecipe.png) | ![new-recipe-name](https://github.com/putthidaSR/Your-Recipe-Mobile-App/blob/master/assets/screenshots/11%20-%20new%20name.png) |![delete-recipe](https://github.com/putthidaSR/Your-Recipe-Mobile-App/blob/master/assets/screenshots/12%20-%20deleterecipe.png) |
+
+| Search Recipes From Any Users | Search Recipes From Any Users | View Recipe Full Details | |
+| :------: | :--------: | :--------: | :-----------: |
+| ![search-recipe-no-result](https://github.com/putthidaSR/Your-Recipe-Mobile-App/blob/master/assets/screenshots/15%20-%20searchNoResults.png) | ![search-with-results](https://github.com/putthidaSR/Your-Recipe-Mobile-App/blob/master/assets/screenshots/13%20-%20search%20recipe.png) | ![search-full-detail](https://github.com/putthidaSR/Your-Recipe-Mobile-App/blob/master/assets/screenshots/14%20-%20searchfulldeitals.png) | |
+
+
