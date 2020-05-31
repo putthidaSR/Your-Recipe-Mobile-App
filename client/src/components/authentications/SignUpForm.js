@@ -35,6 +35,16 @@ export default class SignUpForm extends Component {
       return;
     }
 
+    if (password.length < 6) {
+      Alert.alert(
+        'Failed to Sign-up',
+        '\nPassword must be at least 6 characters long.',
+        [{ text: 'OK' }],
+        { cancelable: false },
+      );
+      return;
+    }
+
     this.setState({isLoading: true});
 
     const URL = SERVER_IP_ADDRESS + '/users/';

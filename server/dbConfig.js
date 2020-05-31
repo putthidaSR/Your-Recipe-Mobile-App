@@ -1,22 +1,11 @@
 /**
- * This class stores Azure MySQL credientials and related configuration functions to connect and test
- * if the backend server can communicate with the cloud database.
+ * This class stores Azure MySQL credientials.
  */
-
 var mysql = require('mysql');
 
 /**
  * Azure MySQL credential
  */
-// var connection = mysql.createConnection({
-// 	host: "letsgogogo.mysql.database.azure.com", 
-// 	user: "bjj@letsgogogo", 
-// 	password: "!23Qweasd", 
-// 	database: "TCSS_545_GROUP_9", 
-// 	port: 3306, 
-// 	ssl:true
-// });
-
 var mysql_pool = mysql.createPool({
 	host: "545-mysql-real.mysql.database.azure.com", 
 	user: "bjj@545-mysql-real", 
@@ -37,9 +26,5 @@ var mysql_pool = mysql.createPool({
 //     console.log('Database connection established.');
 //   }
 // });  
-
-// connection.on('error', function (err) {
-//   console.log('MySQL - caught this error: ' + err.toString());
-// });
 
 module.exports = mysql_pool;

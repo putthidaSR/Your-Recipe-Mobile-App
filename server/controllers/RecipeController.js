@@ -1,6 +1,8 @@
 const mysql = require('../dbConfig.js');
 
-
+/**
+ * Find any recipes that belong to a specific user.
+ */
 exports.findOne = (req, res) => {
 
   mysql.query(`SELECT * FROM view_posted_recipes WHERE user_name = '${req.params.username}'
@@ -25,6 +27,9 @@ exports.findOne = (req, res) => {
 	});
 }
 
+/**
+ * Delete the recipe with the specified ID.
+ */
 exports.deleteOne = (req, res) => {
 
   mysql.query(`DELETE FROM Recipe WHERE id = '${req.params.recipeId}'`, function (error, results) {
@@ -48,6 +53,9 @@ exports.deleteOne = (req, res) => {
 	});
 }
 
+/**
+ * Update recipe name based on the specified ID.
+ */
 exports.updateOne = (req, res) => {
 
   mysql.query(`UPDATE Recipe SET name = '${req.params.newRecipeName}' WHERE id = '${req.params.recipeId}'`, function (error, results) {
@@ -71,6 +79,9 @@ exports.updateOne = (req, res) => {
 	});
 }
 
+/**
+ * Get all the recipe details of the specified recipe ID.
+ */
 exports.findOneDetailRecipe = (req, res) => {
 
   mysql.query(`SELECT * FROM RecipeDetails WHERE recipe_id = '${req.params.recipeId}'`, function (error, results) {
@@ -153,7 +164,9 @@ exports.findOneDetailRecipe = (req, res) => {
 	});
 }
 
-
+/**
+ * Search for all recipes that match the searching options.
+ */
 exports.search = (req, res) => {
 
   // Validate request
@@ -193,8 +206,9 @@ exports.search = (req, res) => {
 	});
 }
 
-
-
+/**
+ * Upload the new recipe to the DB.
+ */
 exports.create = (req, res) => {
   
   var hasError = false;
@@ -221,6 +235,7 @@ exports.create = (req, res) => {
             var insertRecipeDetailsSql = `INSERT INTO RecipeDetails(recipe_id, time_needed, difficulty_level)
               VALUES ('${recipeId}', '${req.body.timeNeeded}', '${req.body.difficultyLevel}')`;
 
+            // insert tp recipeDetails
             console.log('Attempt to insert a new recipeDetails with recipeId = ' + recipeId);
             mysql.query(insertRecipeDetailsSql, function (error, results) {
 
@@ -234,10 +249,14 @@ exports.create = (req, res) => {
                     var recipeDetailId = JSON.stringify(results[0].id);
                     console.log('Attempt to insert recipeOrigin', recipeDetailId)
 
+                    /*
+                     * From this point onward, we go through different tables to insert all the details based on the recipeDetailsId
+                     */
                     mysql.query(`INSERT INTO RecipeOrigin(country_name, recipeDetails_id) VALUES ('${req.body.origin}', '${recipeDetailId}')`, function (error, results) {
 
                       if (!error) {
 
+                        // One recipe can have many diet type
                         req.body.dietType.forEach((element) => {
                           console.log('Insert dietType value: ', element);
                           mysql.query( `INSERT INTO DietType(recipeDetails_id, name) VALUES ('${recipeDetailId}', '${element}')`, function (error, results) {
@@ -250,6 +269,7 @@ exports.create = (req, res) => {
 
                         })
             
+                        // One recipe can have many food type
                         req.body.foodType.forEach((element) => {
                           console.log('Insert FoodType value: ', element);
                           mysql.query( `INSERT INTO FoodType(recipeDetails_id, name) VALUES ('${recipeDetailId}', '${element}')`, function (error, results) {
@@ -260,7 +280,8 @@ exports.create = (req, res) => {
                             }
                           });
                         })
-            
+
+                        // One recipe can have many ingredient list
                         req.body.ingredientList.forEach((element) => {
                           console.log('Insert ingredient value: ', element);
                           mysql.query( `INSERT INTO Ingredient(name, recipeDetails_id) VALUES ('${element}','${recipeDetailId}')`, function (error, results) {
@@ -272,6 +293,7 @@ exports.create = (req, res) => {
                           });
                         })
 
+                        // One recipe can have many cooking steps
                         req.body.cookingSteps.forEach((element) => {
                           console.log('Insert direction value: ', element);
                           mysql.query( `INSERT INTO Direction(step, recipeDetails_id) VALUES ('${element}', '${recipeDetailId}')`, function (error, results) {
