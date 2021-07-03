@@ -1,11 +1,5 @@
 <h1 align="center">Your Secret Recipe Mobile Application</h1>
 
-
-<p align="center">
- <b><br>University of Washington Tacoma</b><br>
- <b>TCSS 545: Database Systems Design – Spring 2020</b><br><br>
-</p>
-
 The goal of this project is to design and implement the full-stack database application in which the database backend is to be implemented on cloud. We built a cross-platform hybrid mobile application that allows users to post and view different recipes. Some of the features include:
 - User Registration
 - Ability to post recipes 
